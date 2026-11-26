@@ -1,0 +1,17 @@
+name = "passeport-bot"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[[kv_namespaces]]
+binding = "KV"
+id = "70e4c6acb9b14542b14c67440f3fbadd"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "passeport-bot"
+database_id = "e0d4e1f4-9a75-41ed-b7f8-321ef0cb2f32"
+migrations_dir = "migrations"

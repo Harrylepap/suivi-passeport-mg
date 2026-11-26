@@ -1,0 +1,129 @@
+name: Tests, release et déploiement
+
+on:
+  push:
+    branches: [main, develop]
+    paths-ignore:
+      - "**.md"
+      - "annonces.json"
+      - "analytics/**"
+      - "LICENSE"
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  releve:
+    name: Tests du relevé
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Installer Tesseract et les dépendances
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends tesseract-ocr
+          pip install -q -r requirements.txt
+      - name: Lancer les tests
+        run: python -m unittest discover -s tests -v
+
+  worker:
+    name: Tests du Worker
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: worker
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  release:
+    name: Release
+    needs: [releve, worker]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: version
+        name: Créer la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="v1.${{ github.run_number }}"
+          if ! gh release view "$version" > /dev/null 2>&1; then
+            gh release create "$version" --target "${{ github.sha }}" --title "$version" --generate-notes
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  deploiement:
+    name: Déploiement du Worker
+    needs: release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    concurrency:
+      group: deploiement
+      cancel-in-progress: false
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      VERSION: ${{ needs.release.outputs.version }}
+    steps:
+      - id: jeton
+        name: Vérifier la présence du jeton Cloudflare
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Secret CLOUDFLARE_API_TOKEN absent, $VERSION n'est pas déployée"
+          fi
+      - uses: actions/checkout@v7
+        if: steps.jeton.outputs.present == 'true'
+      - uses: actions/setup-node@v7
+        if: steps.jeton.outputs.present == 'true'
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - name: Installer Wrangler
+        if: steps.jeton.outputs.present == 'true'
+        working-directory: worker
+        run: npm ci
+      - name: Appliquer les migrations de la base
+        if: steps.jeton.outputs.present == 'true'
+        working-directory: worker
+        run: npx wrangler d1 migrations apply passeport-bot --remote
+      - name: Déployer
+        if: steps.jeton.outputs.present == 'true'
+        working-directory: worker
+        env:
+          CONTACT: ${{ vars.CONTACT }}
+        run: npx wrangler deploy --tag "$VERSION" --message "Release $VERSION" --var "CONTACT:$CONTACT"
+      - name: Alerter en cas d'échec
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -sS -o /dev/null -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=Le déploiement de ${VERSION} a échoué : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

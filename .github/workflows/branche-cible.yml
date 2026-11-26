@@ -1,0 +1,23 @@
+name: Branche cible
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  cible:
+    name: Les demandes de fusion vers main viennent de develop
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Vérifier l'origine
+        env:
+          TETE: ${{ github.head_ref }}
+          DEPOT_TETE: ${{ github.event.pull_request.head.repo.full_name }}
+          DEPOT: ${{ github.repository }}
+        run: |
+          if [ "$TETE" != "develop" ] || [ "$DEPOT_TETE" != "$DEPOT" ]; then
+            echo "::error::Les contributions se proposent sur la branche develop. Changez la branche cible de cette demande de fusion."
+            exit 1
+          fi

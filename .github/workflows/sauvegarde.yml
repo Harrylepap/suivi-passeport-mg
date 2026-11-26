@@ -1,0 +1,76 @@
+name: Sauvegarde des données
+
+on:
+  schedule:
+    - cron: "17 3 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sauvegarde
+  cancel-in-progress: false
+
+jobs:
+  sauvegarde:
+    name: Export chiffré de la base et des abonnés
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      WORKER_URL: ${{ secrets.WORKER_URL }}
+      ADMIN_SECRET: ${{ secrets.ADMIN_SECRET }}
+      SAUVEGARDE_PHRASE: ${{ secrets.SAUVEGARDE_PHRASE }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Vérifier la phrase de chiffrement
+        run: test -n "$SAUVEGARDE_PHRASE" || { echo "::error::Secret SAUVEGARDE_PHRASE absent"; exit 1; }
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        continue-on-error: true
+        with:
+          ref: sauvegarde
+          path: precedentes
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - name: Installer Wrangler
+        working-directory: worker
+        run: npm ci
+      - name: Exporter et chiffrer
+        run: |
+          jour=$(date -u +%Y-%m-%d)
+          clair=$(mktemp -d)
+          (cd worker && npx wrangler d1 export passeport-bot --remote --output "$clair/base.sql")
+          curl -fsS -H "Authorization: Bearer $ADMIN_SECRET" "$WORKER_URL/admin/abonnes" > "$clair/abonnes.json"
+          test -s "$clair/base.sql" && test -s "$clair/abonnes.json"
+          mkdir -p copies
+          tar -C "$clair" -czf - base.sql abonnes.json \
+            | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -salt -pass env:SAUVEGARDE_PHRASE -out "copies/$jour.tar.gz.enc"
+          rm -rf "$clair"
+          test -s "copies/$jour.tar.gz.enc"
+      - name: Garder les quatre dernières semaines
+        run: |
+          if [ -d precedentes ]; then
+            find precedentes -maxdepth 1 -type f -name '20*.tar.gz.enc' -exec cp {} copies/ \;
+          fi
+          ls -1 copies/20*.tar.gz.enc | sort | head -n -4 | xargs -r rm -f
+          cd copies
+          git init -q -b sauvegarde
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "Sauvegarde chiffrée du $(date -u +%Y-%m-%d)"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}" sauvegarde
+          ls -1
+      - name: Alerter en cas d'échec
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -sS -o /dev/null -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=La sauvegarde des données a échoué : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

@@ -1,0 +1,6 @@
+__pycache__/
+*.tmp
+.dev.vars
+.wrangler/
+node_modules/
+abonnes.json
