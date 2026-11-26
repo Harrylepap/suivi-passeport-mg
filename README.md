@@ -45,7 +45,7 @@ Service bénévole, indépendant de l'Ambassade. Les [listes officielles](https:
 | Numéros aberrants après lecture | de 232 à 1, grâce au prétraitement et au vote |
 | Appels au site de l'Ambassade | 2 par jour, plus 2 téléchargements au plus par nouvelle affiche |
 | Disponibilité du bot | 24 h sur 24, réponse immédiate |
-| Tests automatisés | 49 sur quatre niveaux, de la règle de gestion au parcours complet en Gherkin |
+| Tests automatisés | 54 sur quatre niveaux, de la règle de gestion au parcours complet en Gherkin |
 | Coût d'exploitation | 0 € |
 
 ## Architecture
@@ -121,7 +121,7 @@ La stratégie suit celle de mon [engineering playbook](https://github.com/Harryl
 
 | Niveau | La question | Ce qu'il touche | Tests |
 |---|---|---|---|
-| Unitaire `*Test` | Cette règle de gestion est-elle juste ? | Une fonction, sans réseau ni base | 20 |
+| Unitaire `*Test` | Cette règle de gestion est-elle juste ? | Une fonction, sans réseau ni base | 25 |
 | Intégration `*IT` | Ce composant parle-t-il correctement à ses dépendances ? | Tesseract réel, site simulé, base D1 locale | 9 |
 | API `*ApiScenario` | Le contrat tient-il, vu de l'extérieur ? | Le Worker démarré, appelé comme Telegram l'appelle | 15 |
 | Bout en bout | Le parcours utilisateur fonctionne-t-il ? | Relevé, lecture des affiches et Worker réels | 5 scénarios Gherkin |
@@ -171,6 +171,7 @@ Unitaires ──┬── Intégration ──┐
 | Release | Créée sur `main` seulement si les quatre niveaux réussissent, avec ses notes de version |
 | Déploiement | Migrations D1 appliquées, puis Worker publié et étiqueté du numéro de release |
 | Alertes | Message Telegram à l'administrateur si un relevé, un déploiement ou une sauvegarde échoue, ou si une affiche est lue de façon suspecte |
+| Bilan | À chaque relevé, un message à l'administrateur : nouvelles affiches, état du Worker et du webhook Telegram. Son absence signale un relevé qui n'a pas tourné |
 | Observabilité | Journaux JSON du Worker, consultables dans Cloudflare |
 | Dépendances | Versions figées : `requirements.txt`, `requirements-dev.txt`, `package-lock.json`, actions et image d'exécution |
 
