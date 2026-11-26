@@ -1,0 +1,51 @@
+Fonctionnalité: Être prévenu de la publication de son numéro # features/etre_prevenu.feature:2
+  Pour ne pas avoir à revenir chaque jour
+  En tant que personne dont le numéro n'est pas encore publié
+  Je veux que le bot me prévienne le jour où il paraît
+  Fonctionnalité: Être prévenu de la publication de son numéro  # features/etre_prevenu.feature:2
+
+  Scénario: Mon numéro suivi paraît dans une nouvelle liste          # features/etre_prevenu.feature:11
+    Étant donné que l'Ambassade a publié les listes "BEG 2025-016"   # features/steps/parcours.py:61
+    Et que le relevé est passé                                       # features/steps/parcours.py:71
+    Étant donné que j'ai envoyé "2026-61191" au bot                  # features/steps/parcours.py:77
+    Quand l'Ambassade publie la liste "BEG 2026-066"                 # features/steps/parcours.py:66
+    Et que le relevé passe                                           # features/steps/parcours.py:71
+    Alors je reçois l'annonce "Nouvelle liste publiée le 24/11/2026" # features/steps/parcours.py:113
+    Et l'annonce rappelle la publication précédente du "16/05/2025"  # features/steps/parcours.py:121
+    Et je reçois l'alerte "2026-61191 est publié"                    # features/steps/parcours.py:126
+
+  Scénario: Je ne reçois plus rien après m'être désinscrit         # features/etre_prevenu.feature:19
+    Étant donné que l'Ambassade a publié les listes "BEG 2025-016" # features/steps/parcours.py:61
+    Et que le relevé est passé                                     # features/steps/parcours.py:71
+    Étant donné que j'ai envoyé "2026-61191" au bot                # features/steps/parcours.py:77
+    Et que j'ai envoyé "/stop" au bot                              # features/steps/parcours.py:77
+    Quand l'Ambassade publie la liste "BEG 2026-066"               # features/steps/parcours.py:66
+    Et que le relevé passe                                         # features/steps/parcours.py:71
+    Alors je ne reçois ni annonce ni alerte                        # features/steps/parcours.py:133
+
+Fonctionnalité: Savoir si son passeport est prêt # features/rechercher_un_numero.feature:2
+  Pour ne plus relire chaque affiche à l'œil
+  En tant que personne qui attend son passeport
+  Je veux envoyer mon numéro de quittance au bot et savoir s'il a été publié
+  Fonctionnalité: Savoir si son passeport est prêt  # features/rechercher_un_numero.feature:2
+
+  Scénario: Mon numéro figure dans une liste publiée                                # features/rechercher_un_numero.feature:11
+    Étant donné que l'Ambassade a publié les listes "BEG 2025-038, BEG 2026-066"    # features/steps/parcours.py:61
+    Et que le relevé est passé                                                      # features/steps/parcours.py:71
+    Quand j'envoie "2026-61191" au bot                                              # features/steps/parcours.py:83
+    Alors le bot me répond que "2026-61191" est publié dans la liste "BEG 2026-066" # features/steps/parcours.py:88
+    Et la réponse contient l'affiche                                                # features/steps/parcours.py:96
+
+  Scénario: Mon numéro n'est pas encore publié                                   # features/rechercher_un_numero.feature:16
+    Étant donné que l'Ambassade a publié les listes "BEG 2025-038, BEG 2026-066" # features/steps/parcours.py:61
+    Et que le relevé est passé                                                   # features/steps/parcours.py:71
+    Quand j'envoie "2026-99999" au bot                                           # features/steps/parcours.py:83
+    Alors le bot me répond que "2026-99999" n'est pas encore publié              # features/steps/parcours.py:101
+    Et il me propose de me prévenir                                              # features/steps/parcours.py:108
+
+  Scénario: J'envoie mon numéro sans l'année                                        # features/rechercher_un_numero.feature:21
+    Étant donné que l'Ambassade a publié les listes "BEG 2025-038, BEG 2026-066"    # features/steps/parcours.py:61
+    Et que le relevé est passé                                                      # features/steps/parcours.py:71
+    Quand j'envoie "53580" au bot                                                   # features/steps/parcours.py:83
+    Alors le bot me répond que "2025-53580" est publié dans la liste "BEG 2025-038" # features/steps/parcours.py:88
+

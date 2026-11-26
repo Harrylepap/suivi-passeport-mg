@@ -1,0 +1,6 @@
+[run]
+source = check
+
+[report]
+show_missing = false
+skip_empty = true

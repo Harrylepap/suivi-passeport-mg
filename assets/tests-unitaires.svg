@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="750" viewBox="0 0 980 750" role="img" aria-label="Unitaires · règles de gestion, sans réseau ni base">
+<rect width="980" height="750" rx="12" fill="#0D1117"/>
+<rect x="0" y="0" width="490.0" height="4" fill="#FC3D32"/><rect x="490.0" y="0" width="490.0" height="4" fill="#007E3A"/>
+<circle cx="24" cy="26" r="6" fill="#FF5F57"/><circle cx="44" cy="26" r="6" fill="#FEBC2E"/><circle cx="64" cy="26" r="6" fill="#28C840"/>
+<text x="490.0" y="31" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="13" fill="#8B949E">Unitaires · règles de gestion, sans réseau ni base</text>
+<text x="24" y="74" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#8B949E">$ <tspan fill="#E6EDF3">python -m unittest discover -s tests/unitaires</tspan></text>
+<text x="24" y="96" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">ControleDeLectureTest</text>
+<text x="42" y="118" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_seuils</text>
+<text x="24" y="140" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">DatesDePublicationTest</text>
+<text x="42" y="162" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_jour_lu_dans_le_nom_du_fichier</text>
+<text x="42" y="184" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_precedente_est_tout_le_jour_anterieur</text>
+<text x="42" y="206" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_regroupement_par_jour</text>
+<text x="24" y="228" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">MessageDePublicationTest</text>
+<text x="42" y="250" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_plusieurs_listes_le_meme_jour</text>
+<text x="42" y="272" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_une_seule_liste_sans_precedente</text>
+<text x="24" y="294" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">NomCourtTest</text>
+<text x="42" y="316" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_titres</text>
+<text x="24" y="338" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">NumerosDeQuittanceTest</text>
+<text x="42" y="360" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_formats_acceptes</text>
+<text x="42" y="382" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_numero_d_annonce_ignore</text>
+<text x="42" y="404" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_telephone_ignore</text>
+<text x="24" y="426" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">Ran 10 tests · OK</text>
+<text x="24" y="470" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#8B949E">$ <tspan fill="#E6EDF3">npm run test:unitaire</tspan></text>
+<text x="24" y="492" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">ExtractionDesNumerosTest</text>
+<text x="42" y="514" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un numéro complet est reconnu, quel que soit le séparateur</text>
+<text x="42" y="536" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ sans année, le numéro est gardé comme numéro court</text>
+<text x="42" y="558" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un numéro complet l&#x27;emporte sur les numéros courts</text>
+<text x="42" y="580" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ les doublons sont retirés</text>
+<text x="42" y="602" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un texte sans numéro ne donne rien</text>
+<text x="24" y="624" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">PresentationTest</text>
+<text x="42" y="646" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ les titres d&#x27;affiches sont nettoyés</text>
+<text x="42" y="668" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ le HTML est échappé</text>
+<text x="42" y="690" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ la politique de confidentialité affiche le contact configuré</text>
+<text x="24" y="712" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">8 réussis · 0 échec</text>
+</svg>

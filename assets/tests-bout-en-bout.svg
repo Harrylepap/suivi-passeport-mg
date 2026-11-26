@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="332" viewBox="0 0 980 332" role="img" aria-label="Bout en bout · scénarios Gherkin, relevé et Worker réels">
+<rect width="980" height="332" rx="12" fill="#0D1117"/>
+<rect x="0" y="0" width="490.0" height="4" fill="#FC3D32"/><rect x="490.0" y="0" width="490.0" height="4" fill="#007E3A"/>
+<circle cx="24" cy="26" r="6" fill="#FF5F57"/><circle cx="44" cy="26" r="6" fill="#FEBC2E"/><circle cx="64" cy="26" r="6" fill="#28C840"/>
+<text x="490.0" y="31" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="13" fill="#8B949E">Bout en bout · scénarios Gherkin, relevé et Worker réels</text>
+<text x="24" y="74" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#8B949E">$ <tspan fill="#E6EDF3">python -m behave</tspan></text>
+<text x="24" y="96" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">Être prévenu de la publication de son numéro</text>
+<text x="42" y="118" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ Mon numéro suivi paraît dans une nouvelle liste</text>
+<text x="42" y="140" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ Je ne reçois plus rien après m&#x27;être désinscrit</text>
+<text x="24" y="162" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">Savoir si son passeport est prêt</text>
+<text x="42" y="184" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ Mon numéro figure dans une liste publiée</text>
+<text x="42" y="206" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ Mon numéro n&#x27;est pas encore publié</text>
+<text x="42" y="228" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ J&#x27;envoie mon numéro sans l&#x27;année</text>
+<text x="24" y="250" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#8B949E" xml:space="preserve">2 features passed, 0 failed</text>
+<text x="24" y="272" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#8B949E" xml:space="preserve">5 scenarios passed, 0 failed</text>
+<text x="24" y="294" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">29 steps passed, 0 failed</text>
+</svg>

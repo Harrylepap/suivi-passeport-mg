@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="508" viewBox="0 0 980 508" role="img" aria-label="Intégration · Tesseract, site simulé, base D1 locale">
+<rect width="980" height="508" rx="12" fill="#0D1117"/>
+<rect x="0" y="0" width="490.0" height="4" fill="#FC3D32"/><rect x="490.0" y="0" width="490.0" height="4" fill="#007E3A"/>
+<circle cx="24" cy="26" r="6" fill="#FF5F57"/><circle cx="44" cy="26" r="6" fill="#FEBC2E"/><circle cx="64" cy="26" r="6" fill="#28C840"/>
+<text x="490.0" y="31" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="13" fill="#8B949E">Intégration · Tesseract, site simulé, base D1 locale</text>
+<text x="24" y="74" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#8B949E">$ <tspan fill="#E6EDF3">python -m unittest discover -s tests/integration</tspan></text>
+<text x="24" y="96" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">LectureDesAffichesIT</text>
+<text x="42" y="118" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_affiches_de_reference</text>
+<text x="24" y="140" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">ReleveDuSiteIT</text>
+<text x="42" y="162" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_liste_lue_malgre_les_notices_php</text>
+<text x="42" y="184" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ test_site_vide_signale</text>
+<text x="24" y="206" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">Ran 3 tests · OK</text>
+<text x="24" y="250" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#8B949E">$ <tspan fill="#E6EDF3">npm run test:integration</tspan></text>
+<text x="24" y="272" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">SchemaIT</text>
+<text x="42" y="294" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ les migrations créent les tables attendues</text>
+<text x="24" y="316" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">JournalisationIT</text>
+<text x="42" y="338" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ l&#x27;identité de la personne est enregistrée dans D1</text>
+<text x="42" y="360" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ une recherche est rattachée à la conversation, avec son résultat</text>
+<text x="24" y="382" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">EffacementIT</text>
+<text x="42" y="404" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ /stop supprime la fiche et tout l&#x27;historique de la personne</text>
+<text x="42" y="426" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ la purge efface les personnes inactives depuis douze mois et les prévient</text>
+<text x="42" y="448" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ une personne active n&#x27;est pas purgée</text>
+<text x="24" y="470" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">6 réussis · 0 échec</text>
+</svg>

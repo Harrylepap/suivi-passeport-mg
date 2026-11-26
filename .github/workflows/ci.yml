@@ -18,8 +18,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  releve:
-    name: Tests du relevé
+  unitaires:
+    name: Unitaires
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -28,18 +28,63 @@ jobs:
         with:
           python-version: "3.13"
           cache: pip
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - name: Installer les dépendances
+        run: |
+          pip install -q -r requirements-dev.txt
+          (cd worker && npm ci)
+      - name: Relevé, règles de gestion
+        run: coverage run -m unittest discover -s tests/unitaires -t . -v
+      - name: Worker, règles de gestion
+        working-directory: worker
+        run: npm run test:unitaire | tee ../couverture-worker.txt
+      - name: Couverture
+        run: |
+          {
+            echo "### Couverture des tests unitaires"
+            echo '```'
+            coverage report
+            grep -E "file|index.js" couverture-worker.txt || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  integration:
+    name: Intégration
+    needs: unitaires
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
       - name: Installer Tesseract et les dépendances
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends tesseract-ocr
-          pip install -q -r requirements.txt
-      - name: Lancer les tests
-        run: python -m unittest discover -s tests -v
+          pip install -q -r requirements-dev.txt
+          (cd worker && npm ci)
+      - name: Relevé, Tesseract et site simulé
+        run: python -m unittest discover -s tests/integration -p "test_*_it.py" -t . -v
+      - name: Worker, base D1 locale
+        working-directory: worker
+        run: npm run test:integration
 
-  worker:
-    name: Tests du Worker
+  api:
+    name: API
+    needs: unitaires
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: worker
@@ -51,11 +96,39 @@ jobs:
           cache: npm
           cache-dependency-path: worker/package-lock.json
       - run: npm ci
-      - run: npm test
+      - name: Scénarios d'API, Worker démarré en local
+        run: npm run test:api
+
+  bout-en-bout:
+    name: Bout en bout
+    needs: [integration, api]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - name: Installer Tesseract et les dépendances
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends tesseract-ocr
+          pip install -q -r requirements-dev.txt
+          (cd worker && npm ci)
+      - name: Scénarios Gherkin
+        env:
+          PYTHONPATH: .
+        run: python -m behave --no-color
 
   release:
     name: Release
-    needs: [releve, worker]
+    needs: bout-en-bout
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 5

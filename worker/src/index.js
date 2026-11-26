@@ -34,7 +34,7 @@ const AIDE = [
   PRUDENCE,
 ].join("\n");
 /** Compose la politique de confidentialité, avec le contact défini dans la configuration. */
-const confidentialite = (contact) => [
+export const confidentialite = (contact) => [
   "<b>Confidentialité</b>",
   "",
   "Ce service est bénévole et indépendant de l'Ambassade.",
@@ -155,7 +155,8 @@ async function purger(env) {
 /** Appelle l'API Telegram et lève une erreur portant le code renvoyé en cas d'échec. */
 async function tg(env, method, payload) {
   const estFormulaire = payload instanceof FormData;
-  const rep = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/${method}`, {
+  const api = (env.TELEGRAM_API || "https://api.telegram.org").replace(/\/$/, "");
+  const rep = await fetch(`${api}/bot${env.TELEGRAM_BOT_TOKEN}/${method}`, {
     method: "POST",
     headers: estFormulaire ? undefined : { "content-type": "application/json" },
     body: estFormulaire ? payload : JSON.stringify(payload),
@@ -244,11 +245,18 @@ async function journaliser(env, chat, type, details = {}) {
   }
 }
 
+/** Extrait d'un message les numéros complets (2026-61191) ou, à défaut, les numéros sans année. */
+export function extraireNumeros(texte) {
+  const complets = [...new Set([...texte.matchAll(RE_QUITTANCE)].map((m) => `${m[1]}-${m[2]}`))];
+  const courts = complets.length ? [] : [...new Set([...texte.matchAll(RE_COURT)].map((m) => m[1]))];
+  return { complets, courts };
+}
+
 /** Échappe un texte pour l'insérer dans un message HTML. */
-const echapper = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+export const echapper = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 /** Renvoie le titre nettoyé d'une affiche, par exemple « BEG 2026-066 ». */
-function nomCourt(fiche) {
+export function nomCourt(fiche) {
   const titre = fiche.titre
     .replace(/^Num\S*\s*:\s*/, "")
     .trim()
@@ -382,8 +390,7 @@ async function repondre(env, chat, texte) {
     );
   }
 
-  const complets = [...new Set([...texte.matchAll(RE_QUITTANCE)].map((m) => `${m[1]}-${m[2]}`))];
-  const courts = complets.length ? [] : [...new Set([...texte.matchAll(RE_COURT)].map((m) => m[1]))];
+  const { complets, courts } = extraireNumeros(texte);
   if (!complets.length && !courts.length) {
     await journaliser(env, chat, "message_autre");
     return envoyerTexte(env, chat, profil.nouveau ? ACCUEIL : AIDE, MENU);

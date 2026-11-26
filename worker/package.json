@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test",
+    "test": "npm run test:unitaire && npm run test:integration && npm run test:api",
+    "test:unitaire": "node --test --experimental-test-coverage --test-coverage-include=src/** \"test/unitaire/**/*.test.js\"",
+    "test:integration": "node --test --test-concurrency=1 \"test/integration/**/*.test.js\"",
+    "test:api": "node --test --test-concurrency=1 \"test/api/**/*.test.js\"",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {

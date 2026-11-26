@@ -16,9 +16,13 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 
-ENDPOINT = "https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce/liste_quittance"
+ENDPOINT = os.environ.get(
+    "SITE_ANNONCES_URL",
+    "https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce/liste_quittance",
+)
 PAGE = "https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce"
-BASE = Path(__file__).parent / "annonces.json"
+BASE = Path(os.environ.get("ANNONCES_JSON", Path(__file__).parent / "annonces.json"))
+TELEGRAM_API = os.environ.get("TELEGRAM_API_URL", "https://api.telegram.org").rstrip("/")
 UA = {"User-Agent": "Mozilla/5.0"}
 TIMEOUT = 60
 
@@ -225,7 +229,7 @@ def journaliser(evenements):
 
 def telegram(method, fields, file=None, files=None):
     """Appelle l'API Telegram, avec des fichiers joints si « file » ou « files » est fourni."""
-    url = f"https://api.telegram.org/bot{os.environ['TELEGRAM_BOT_TOKEN']}/{method}"
+    url = f"{TELEGRAM_API}/bot{os.environ['TELEGRAM_BOT_TOKEN']}/{method}"
     joints = files or ([file] if file else [])
     headers = None
     if not joints:

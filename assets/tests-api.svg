@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="618" viewBox="0 0 980 618" role="img" aria-label="API · Worker démarré, appelé comme Telegram et le relevé">
+<rect width="980" height="618" rx="12" fill="#0D1117"/>
+<rect x="0" y="0" width="490.0" height="4" fill="#FC3D32"/><rect x="490.0" y="0" width="490.0" height="4" fill="#007E3A"/>
+<circle cx="24" cy="26" r="6" fill="#FF5F57"/><circle cx="44" cy="26" r="6" fill="#FEBC2E"/><circle cx="64" cy="26" r="6" fill="#28C840"/>
+<text x="490.0" y="31" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="13" fill="#8B949E">API · Worker démarré, appelé comme Telegram et le relevé</text>
+<text x="24" y="74" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#8B949E">$ <tspan fill="#E6EDF3">npm run test:api</tspan></text>
+<text x="24" y="96" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">WebhookApiScenario</text>
+<text x="42" y="118" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un appel sans le secret de Telegram est refusé et reste sans effet</text>
+<text x="42" y="140" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ le webhook répond immédiatement, le message part ensuite</text>
+<text x="24" y="162" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">AccueilApiScenario</text>
+<text x="42" y="184" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ l&#x27;accueil présente le service sans prétendre que les données sont anonymes</text>
+<text x="42" y="206" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un message sans numéro reçoit l&#x27;aide</text>
+<text x="24" y="228" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">RechercheApiScenario</text>
+<text x="42" y="250" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un numéro publié reçoit l&#x27;affiche de sa liste</text>
+<text x="42" y="272" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ une affiche n&#x27;est téléversée qu&#x27;une fois, puis réutilisée</text>
+<text x="42" y="294" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un numéro non publié est mis en suivi</text>
+<text x="42" y="316" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un numéro sans l&#x27;année est retrouvé</text>
+<text x="42" y="338" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un numéro sans l&#x27;année n&#x27;est jamais mis en suivi</text>
+<text x="24" y="360" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">SuiviApiScenario</text>
+<text x="42" y="382" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ le suivi est limité à cinq numéros</text>
+<text x="42" y="404" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un suivi se retire par son bouton</text>
+<text x="24" y="426" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">ConfidentialiteApiScenario</text>
+<text x="42" y="448" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ la politique décrit les données, les droits et le contact configuré</text>
+<text x="24" y="470" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">DesinscriptionApiScenario</text>
+<text x="42" y="492" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ /stop désabonne la personne</text>
+<text x="24" y="514" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">AdministrationApiScenario</text>
+<text x="42" y="536" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ les routes d&#x27;administration exigent le secret</text>
+<text x="42" y="558" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ le bot n&#x27;expose aucune commande de statistiques, même à l&#x27;administrateur</text>
+<text x="24" y="580" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">15 réussis · 0 échec</text>
+</svg>
