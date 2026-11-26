@@ -5,3 +5,4 @@ __pycache__/
 node_modules/
 abonnes.json
 .coverage
+*.output
