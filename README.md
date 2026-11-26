@@ -1,133 +1,166 @@
-# Suivi des passeports à retirer
+<div align="center">
 
-L'Ambassade de Madagascar en France annonce les passeports prêts en publiant des listes de numéros de quittance. Ces listes paraissent sous forme d'images, sans recherche possible et sans alerte : pour savoir si son passeport est arrivé, il faut revenir sur le site et relire chaque affiche.
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:FF2E88,100:FCAF17&height=180&section=header&text=Passeport%20Madagascar%20Paris&fontColor=ffffff&fontSize=40&fontAlignY=35&desc=OCR%20%C2%B7%20serverless%20%C2%B7%200%20%E2%82%AC%20par%20mois&descAlignY=58&descSize=18" alt="Passeport Madagascar Paris" width="100%">
 
-Ce projet relève ces affiches, en extrait les numéros et les rend consultables depuis Telegram.
+[![Telegram](https://img.shields.io/badge/Telegram-@passeport__paris__mg__bot-26A5E4?style=flat-square&logo=telegram&logoColor=white)](https://t.me/passeport_paris_mg_bot)
+[![CI](https://img.shields.io/github/actions/workflow/status/Harrylepap/suivi-passeport-mg/ci.yml?branch=main&style=flat-square&label=ci&labelColor=111111)](https://github.com/Harrylepap/suivi-passeport-mg/actions/workflows/ci.yml)
+![Coût](https://img.shields.io/badge/co%C3%BBt-0%20%E2%82%AC%20%2F%20mois-FCAF17?style=flat-square&labelColor=111111)
+![Licence](https://img.shields.io/badge/licence-MIT-FF2E88?style=flat-square&labelColor=111111)
 
-Le service est bénévole, gratuit et sans lien avec l'Ambassade.
+![Python](https://img.shields.io/badge/Python-3.13-111111?style=flat-square&logo=python&logoColor=FCAF17)
+![Tesseract](https://img.shields.io/badge/Tesseract-OCR-111111?style=flat-square&logo=google&logoColor=FCAF17)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers%20%C2%B7%20KV%20%C2%B7%20D1-111111?style=flat-square&logo=cloudflare&logoColor=F38020)
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-111111?style=flat-square&logo=githubactions&logoColor=FF2E88)
 
-## Ce que l'on peut faire depuis Telegram
+<br>
 
-Le service prend la forme d'un bot Telegram. En lui écrivant, une personne peut :
+Les listes de passeports prêts sont publiées en images, sans recherche ni alerte.<br>
+Ce service les lit, les indexe et répond instantanément sur Telegram, sans serveur et sans frais.
 
-- **savoir si son passeport est prêt** : elle envoie son numéro de quittance, par exemple `2026-61191`, et reçoit aussitôt la réponse, accompagnée de l'affiche où figure le numéro ;
-- **être prévenue plus tard** : si le numéro n'a pas encore été publié, le bot le garde en mémoire et envoie un message le jour où il apparaît dans une liste ;
-- **recevoir chaque nouvelle liste** dès que l'Ambassade la publie ;
-- **revoir la dernière liste**, consulter ou retirer ses numéros suivis, et se désinscrire à tout moment.
+</div>
 
-Les commandes disponibles :
+<br>
 
-| Commande    | Effet                                          |
-|-------------|------------------------------------------------|
-| `/start`    | Présente le service                            |
-| `/derniere` | Renvoie la dernière liste publiée              |
-| `/suivis`   | Affiche les numéros suivis, avec leur retrait  |
-| `/aide`     | Rappelle le mode d'emploi                      |
-| `/stop`     | Désinscrit et efface les numéros suivis        |
+## Le problème
 
-## Une lecture automatique, donc faillible
+L'Ambassade de Madagascar en France annonce les passeports disponibles en publiant des affiches : des images de tableaux contenant des numéros de quittance. Pour savoir si son passeport est arrivé, il faut revenir sur le site, ouvrir chaque affiche et parcourir les numéros à l'œil, parfois pendant des semaines.
 
-Les numéros sont lus sur les images par reconnaissance de caractères. Le résultat est fiable sur les affiches récentes, moins sur les plus anciennes, de qualité inégale. Un numéro peut être manqué ou mal lu.
+## Ce que fait le service
 
-C'est pourquoi chaque réponse est accompagnée de l'image d'origine et rappelle de la vérifier avant de se déplacer. En cas de doute, les [listes officielles](https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce) font foi.
+Depuis le bot Telegram [@passeport_paris_mg_bot](https://t.me/passeport_paris_mg_bot), on peut :
 
-## Fonctionnement
+- **savoir si son passeport est prêt** en envoyant son numéro de quittance, par exemple `2026-61191`. La réponse arrive aussitôt, avec l'affiche où figure le numéro ;
+- **être prévenu plus tard** : un numéro pas encore publié est gardé en mémoire, et la personne reçoit un message le jour où il apparaît ;
+- **recevoir chaque nouvelle publication**, avec les listes du jour et le rappel de la publication précédente.
 
-Le projet se compose de deux parties indépendantes.
+| Commande            | Effet                                         |
+|---------------------|-----------------------------------------------|
+| `/start`            | Présente le service                           |
+| `/derniere`         | Renvoie la dernière liste publiée             |
+| `/suivis`           | Affiche les numéros suivis, avec leur retrait |
+| `/confidentialite`  | Données enregistrées et droits                |
+| `/stop`             | Désinscrit et efface toutes les données       |
 
-**Le relevé** (`check.py`) s'exécute deux fois par jour, à 11 h et à 19 h, heure de Paris, sur GitHub Actions. Il interroge une seule fois le site de l'Ambassade. Si une affiche nouvelle est parue, il la télécharge, en lit les numéros, met la base à jour, envoie l'affiche à tous les abonnés et prévient ceux qui suivaient l'un des numéros.
+Service bénévole, indépendant de l'Ambassade. Les [listes officielles](https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce) font foi.
 
-**Les réponses** (`worker/src/index.js`) sont assurées en continu par un Worker Cloudflare, que Telegram appelle à chaque message. Le Worker ne contacte jamais le site de l'Ambassade pour répondre : il consulte la base déjà constituée.
+## En chiffres
 
-Le site est donc sollicité avec retenue : deux appels par jour, et un seul téléchargement par affiche, à sa première parution. Les images sont ensuite servies par Telegram.
+| | |
+|---|---|
+| Affiches indexées | 136, depuis novembre 2024 |
+| Numéros de quittance lus | 3 099 |
+| Numéros aberrants après lecture | de 232 à 1, grâce au prétraitement et au vote |
+| Appels au site de l'Ambassade | 2 par jour, plus 2 téléchargements au plus par nouvelle affiche |
+| Disponibilité du bot | 24 h sur 24, réponse immédiate |
+| Tests automatisés | 24, dont la lecture complète de 3 affiches de référence |
+| Coût d'exploitation | 0 € |
 
-### La lecture des affiches
+## Architecture
 
-Avant la reconnaissance de caractères, chaque image est agrandie, convertie en noir et blanc, puis débarrassée de son cadre et des traits du tableau, qui perturbent la lecture. Elle est lue six fois, à trois tailles et selon deux modes de mise en page de Tesseract. Un numéro n'est retenu que si deux lectures au moins s'accordent.
+```mermaid
+flowchart LR
+    U([Utilisateur]) <-->|messages| TG[API Telegram]
+    TG -->|webhook signé| W[Cloudflare Worker<br/>réponses 24/7]
+    W <--> KV[(Workers KV<br/>abonnés, suivis)]
+    W <--> D1[(D1 SQLite<br/>usage)]
 
-## Données et vie privée
-
-- `annonces.json` contient, pour chaque affiche, son titre, son adresse, les numéros lus et l'identifiant de l'image chez Telegram. Ces informations sont publiques : elles proviennent du site de l'Ambassade.
-- Les données des utilisateurs ne figurent pas dans ce dépôt. Elles sont conservées chez Cloudflare : l'inscription et les numéros suivis dans le stockage clé-valeur, l'identité et l'historique dans la base D1.
-- Pour chaque personne sont enregistrés son identifiant de conversation Telegram, son nom public et son pseudonyme, ainsi que les numéros recherchés, la date de chaque recherche et son résultat. Cela sert à répondre, à prévenir de la publication d'un numéro, et à l'analyse d'usage.
-- Les utilisateurs en sont informés par la commande `/confidentialite`, présente dans le menu des commandes et dans l'aide,, qui exposent le traitement et les droits (accès, rectification, effacement) prévus par le RGPD. L'usage du bot vaut acceptation.
-- La commande `/stop` efface l'inscription, les numéros suivis, la fiche de la personne et tous ses événements : c'est le droit à l'effacement.
-- Aucun numéro de téléphone ni aucun texte libre de message n'est conservé, seulement les numéros de quittance recherchés.
-
-Ces données ne sont jamais versées en clair dans ce dépôt public : la base D1 n'est accessible qu'avec le compte Cloudflare de l'administrateur, et les sauvegardes sont chiffrées.
-
-Les personnes sans aucun message depuis 12 mois sont effacées automatiquement lors du relevé, et prévenues par un dernier message.
-
-### Sauvegardes
-
-Chaque dimanche, un workflow exporte la base D1 et la liste des abonnés, les chiffre en AES-256 avec une phrase secrète (secret `SAUVEGARDE_PHRASE`), puis les dépose dans la branche `sauvegarde`, un fichier par date. Seules les quatre dernières semaines sont gardées, et la branche est réécrite à chaque fois, sans historique : une personne effacée disparaît des sauvegardes en quatre semaines au plus. Sans la phrase secrète, les fichiers sont illisibles.
-
-Pour restaurer, dans une base vide :
-
-```
-openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in AAAA-MM-JJ.tar.gz.enc | tar -xzf -
-cd worker
-npx wrangler d1 execute passeport-bot --remote --file ../base.sql
-```
-
-## Statistiques et journaux
-
-Le bot n'expose aucune commande de statistiques : les données ne se consultent qu'en base, avec les droits du compte Cloudflare.
-
-Les tables `personnes` et `evenements` s'interrogent en SQL. Le fichier [analytics/requetes.sql](analytics/requetes.sql) rassemble des requêtes prêtes à l'emploi : recherches par jour, fiche par personne, numéros les plus demandés, délai entre une recherche et la publication.
-
-```
-cd worker
-npx wrangler d1 execute passeport-bot --remote --command "SELECT type, COUNT(*) FROM evenements GROUP BY type"
-npx wrangler d1 execute passeport-bot --remote --json --file ../analytics/requetes.sql > resultats.json
+    S[Site de l'Ambassade] -->|1 requête<br/>11 h et 19 h| R[GitHub Actions<br/>relevé Python + Tesseract]
+    R -->|base des numéros| W
+    R -->|annonces, alertes| TG
+    R -->|annonces.json| G[(Dépôt Git)]
+    D1 -.->|chaque dimanche<br/>AES-256| B[(Branche sauvegarde)]
 ```
 
-| Type d'événement  | Signification                                        |
-|-------------------|------------------------------------------------------|
-| `demarrage`       | Commande `/start`                                    |
-| `recherche`       | Numéro envoyé, avec `trouve` à 1 ou 0                |
-| `suivi_ajoute`    | Numéro non publié mis en suivi                       |
-| `suivi_retire`    | Suivi retiré par l'utilisateur                       |
-| `alerte_suivi`    | Abonné prévenu de la publication d'un numéro suivi   |
-| `diffusion`       | Nouvelle liste envoyée, `valeur` = nombre d'abonnés  |
-| `desinscription`  | Commande `/stop`                                     |
-| `derniere`, `suivis`, `aide`, `message_autre` | Autres actions                   |
+Le système est coupé en deux parties qui n'ont pas les mêmes besoins.
 
-Les journaux d'exécution du Worker, au format JSON, se consultent dans le tableau de bord Cloudflare, onglet Observabilité du Worker, ou en direct avec `npx wrangler tail`.
+- **Le relevé** fait le travail lourd, une reconnaissance de caractères qui prend plusieurs secondes par image. Il tourne sur GitHub Actions, deux fois par jour : Tesseract y est disponible, le calcul est gratuit, et rien ne tourne entre deux passages.
+- **Les réponses** doivent être immédiates et permanentes. Elles reviennent à un Worker Cloudflare, exécuté à la demande à chaque message, sans serveur à maintenir. Pour répondre, le Worker consulte la base déjà constituée, jamais les listes du site.
 
-## Tests et déploiement
+## Ingénierie
 
-Chaque envoi sur `main` et chaque demande de fusion lancent deux séries de tests sur GitHub Actions :
+### Lire des numéros sur des images hétérogènes
 
-- le relevé : nettoyage des titres, reconnaissance des numéros, et lecture complète de trois affiches de référence dont le contenu a été contrôlé à l'œil ;
-- le Worker : accueil, recherche, suivi, désinscription, confidentialité et contrôle des accès.
+Les affiches vont de l'export net en 1654 × 2339 à la capture d'écran de 670 pixels de large, avec cadre orange, tableaux à traits épais et polices variables. Tesseract appliqué tel quel ratait des listes entières et produisait des années impossibles, comme `2005-51700` au lieu de `2025-51700`.
 
-Si les tests réussissent sur `main`, une release numérotée est créée sur GitHub, avec ses notes de version, puis cette version est déployée : les migrations de la base sont appliquées et le Worker est mis en ligne, étiqueté du numéro de la release. Un échec du déploiement ou du relevé quotidien déclenche un message Telegram à l'administrateur.
+La chaîne de lecture :
 
-Pour lancer les tests en local :
+1. **Mise à l'échelle** de chaque image à trois largeurs : 1 800, 2 400 et 3 200 pixels.
+2. **Binarisation** sur le canal le plus clair de chaque pixel, ce qui efface le cadre orange et le drapeau sans toucher au texte noir.
+3. **Suppression des traits du tableau** : un pixel appartenant à une suite sombre horizontale ou verticale plus longue qu'un trentième de la largeur est effacé. Le calcul se fait par sommes cumulées NumPy, en temps linéaire, sans boucle Python.
+4. **Six lectures** par affiche : trois tailles et deux modes de mise en page de Tesseract.
+5. **Vote** : un numéro n'est retenu que si deux lectures au moins le donnent.
 
-```
-python -m unittest discover -s tests -v
-cd worker && npm ci && npm test
-```
+Le réglage a été choisi sur mesures, en comparant une vingtaine de variantes sur les 136 affiches. Les numéros aberrants, c'est-à-dire d'une année ou d'une longueur impossible, sont passés de 232 à 1. Trois affiches représentatives, contrôlées à l'œil, servent de tests de non-régression.
+
+### Un Worker sans état et sans attente
+
+- **Webhook authentifié** : Telegram signe chaque appel avec un secret partagé. Les routes réservées au relevé exigent un second secret.
+- **Réponse immédiate** : le Worker accuse réception à Telegram tout de suite, puis traite le message en arrière-plan avec `waitUntil`.
+- **Images téléversées une seule fois** : au premier envoi d'une affiche, Telegram renvoie un identifiant de fichier. Il est conservé, et les envois suivants le réutilisent sans retoucher le site de l'Ambassade.
+- **Deux stockages, deux usages** : KV pour les abonnés et leurs numéros suivis, lus à chaque message ; D1, une base SQLite, pour les événements d'usage interrogeables en SQL.
+
+### Une planification qui résiste aux retards
+
+Les tâches planifiées de GitHub Actions sont assurées « au mieux » : un relevé prévu à 18 h UTC a été lancé un soir à 1 h 54. Le workflow est donc conçu pour tolérer ces retards :
+
+- créneaux décalés de 7 minutes, pour éviter l'heure pile où la plateforme est saturée ;
+- quatre créneaux UTC déclarés, pour couvrir l'heure d'été et l'heure d'hiver ;
+- une garde qui juge le créneau prévu et non l'heure d'arrivée, si bien qu'un relevé en retard s'exécute quand même ;
+- un relevé manqué n'a pas de conséquence : le suivant rattrape toutes les affiches parues entre-temps.
+
+### Respect du site source
+
+Chaque relevé fait un seul appel à l'interface qui alimente la page des annonces. Une affiche est téléchargée au plus deux fois dans toute sa vie : par le relevé pour la lire, puis par le Worker au premier affichage. Ensuite, Telegram la sert à partir de son identifiant de fichier, et le site n'est plus sollicité.
+
+## Qualité et livraison
+
+| Étape | Mise en œuvre |
+|---|---|
+| Tests du relevé | Titres, extraction des numéros, dates, regroupement par jour, lecture complète de 3 affiches de référence |
+| Tests du Worker | 15 scénarios contre de faux KV, D1 et Telegram : recherche, suivi, effacement, purge, contrôle des accès |
+| Intégration continue | À chaque envoi et à chaque demande de fusion |
+| Release | Créée automatiquement sur `main` après les tests, avec ses notes de version |
+| Déploiement | Migrations D1 appliquées, puis Worker publié et étiqueté du numéro de release |
+| Alertes | Message Telegram à l'administrateur si un relevé, un déploiement ou une sauvegarde échoue, ou si une affiche est lue de façon suspecte |
+| Observabilité | Journaux JSON du Worker, consultables dans Cloudflare |
+| Dépendances | Versions figées : `requirements.txt`, `package-lock.json`, actions et image d'exécution |
+
+## Données personnelles, dès la conception
+
+- **Information** : la commande `/confidentialite` détaille les données enregistrées, leur usage et les droits de chacun.
+- **Effacement** : `/stop` supprime aussitôt l'inscription, les numéros suivis, la fiche et tout l'historique de la personne.
+- **Durée limitée** : sans message depuis 12 mois, les données d'une personne sont effacées automatiquement, et elle en est prévenue.
+- **Sauvegardes chiffrées** : chaque dimanche, la base est exportée, chiffrée en AES-256 et déposée dans la branche `sauvegarde`. Seules les quatre dernières semaines sont gardées, sans historique.
+- **Rien en clair dans ce dépôt public** : ni donnée d'utilisateur, ni secret.
+- **Registre des traitements** tenu à jour : [docs/registre-des-traitements.md](docs/registre-des-traitements.md).
+
+## Coût
+
+| Ressource | Offre | Usage |
+|---|---|---|
+| Cloudflare Workers | Gratuite, 100 000 requêtes par jour | Quelques centaines |
+| Cloudflare KV et D1 | Gratuite | Quelques mégaoctets |
+| GitHub Actions | Gratuite pour un dépôt public | Deux relevés par jour, une sauvegarde par semaine |
+| API Telegram | Gratuite, sans limite de messages | Toutes les notifications |
+| **Total** | | **0 € par mois** |
 
 ## Structure du dépôt
 
 ```
-check.py                      relevé, lecture des affiches, diffusion
-annonces.json                 base des affiches et des numéros lus
-requirements.txt              dépendances Python, versions figées
-tests/                        tests du relevé et affiches de référence
-worker/src/index.js           réponses aux messages (Worker Cloudflare)
-worker/migrations/            schéma de la base de statistiques
-worker/test/                  tests du Worker
-worker/wrangler.toml          configuration du Worker
-analytics/requetes.sql        requêtes d'analyse
-.github/workflows/check.yml   planification du relevé
-.github/workflows/ci.yml      tests, release et déploiement
-.github/workflows/sauvegarde.yml   sauvegarde hebdomadaire chiffrée
-.github/workflows/branche-cible.yml   contrôle de la branche des contributions
-CONTRIBUTING.md               règles de contribution
+check.py                             relevé, lecture des affiches, diffusion
+annonces.json                        base des affiches et des numéros lus
+requirements.txt                     dépendances Python, versions figées
+tests/                               tests du relevé et affiches de référence
+worker/src/index.js                  réponses aux messages (Worker Cloudflare)
+worker/migrations/                   schéma de la base D1
+worker/test/                         tests du Worker
+worker/wrangler.toml                 configuration du Worker
+analytics/requetes.sql               requêtes d'analyse d'usage
+docs/registre-des-traitements.md     registre RGPD
+.github/workflows/check.yml          relevé planifié
+.github/workflows/ci.yml             tests, release et déploiement
+.github/workflows/sauvegarde.yml     sauvegarde hebdomadaire chiffrée
+.github/workflows/branche-cible.yml  contrôle de la branche des contributions
 ```
 
 ## Installer sa propre instance
@@ -159,7 +192,7 @@ Prérequis : un bot Telegram créé auprès de BotFather, un compte Cloudflare, 
    npx wrangler secret put ADMIN_SECRET
    ```
 
-   `WEBHOOK_SECRET` et `ADMIN_SECRET` sont deux chaînes aléatoires à choisir. La première authentifie les appels de Telegram, la seconde ceux du relevé.
+   `WEBHOOK_SECRET` et `ADMIN_SECRET` sont deux chaînes aléatoires. La première authentifie les appels de Telegram, la seconde ceux du relevé.
 
 3. **Publier la base et brancher Telegram sur le Worker**
 
@@ -171,22 +204,26 @@ Prérequis : un bot Telegram créé auprès de BotFather, un compte Cloudflare, 
    python check.py --setup
    ```
 
-4. **Planifier le relevé**
-
-   Ajouter aux secrets du dépôt GitHub :
+4. **Configurer le dépôt GitHub**
 
    | Secret                  | Rôle                                                              |
    |-------------------------|-------------------------------------------------------------------|
    | `TELEGRAM_BOT_TOKEN`    | Jeton du bot                                                      |
    | `WORKER_URL`            | Adresse du Worker                                                 |
    | `ADMIN_SECRET`          | Secret partagé avec le Worker                                     |
-   | `TELEGRAM_CHAT_ID`      | Conversation de l'administrateur, pour les alertes d'échec        |
+   | `TELEGRAM_CHAT_ID`      | Conversation de l'administrateur, pour les alertes                |
    | `CLOUDFLARE_API_TOKEN`  | Jeton Cloudflare avec les droits Workers, KV et D1 en écriture    |
    | `SAUVEGARDE_PHRASE`     | Phrase secrète de chiffrement des sauvegardes                     |
 
-   Et une variable du dépôt, `CONTACT` : le pseudo Telegram affiché par `/confidentialite` pour les demandes RGPD.
+   Et une variable, `CONTACT` : le pseudo Telegram affiché par `/confidentialite` pour les demandes RGPD.
 
-   Le relevé s'exécute ensuite seul, et peut être lancé à la main depuis l'onglet Actions.
+Pour restaurer une sauvegarde dans une base vide :
+
+```
+openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in AAAA-MM-JJ.tar.gz.enc | tar -xzf -
+cd worker
+npx wrangler d1 execute passeport-bot --remote --file ../base.sql
+```
 
 Options de `check.py` :
 
@@ -203,15 +240,13 @@ Les demandes de fusion se proposent sur la branche `develop`, voir [CONTRIBUTING
 
 ## Licence
 
-Le code est distribué sous licence MIT, voir [LICENSE](LICENSE).
+Code sous licence MIT, voir [LICENSE](LICENSE). Les listes et les images restent la propriété de l'Ambassade de Madagascar en France.
 
-Les listes et les images restent la propriété de l'Ambassade de Madagascar en France, qui les publie.
+| Composant  | Usage                         | Licence           |
+|------------|-------------------------------|-------------------|
+| Tesseract  | Reconnaissance de caractères  | Apache 2.0        |
+| Pillow     | Traitement des images         | MIT-CMU           |
+| NumPy      | Calcul sur les pixels         | BSD 3 clauses     |
+| Wrangler   | Déploiement du Worker         | MIT ou Apache 2.0 |
 
-Le projet s'appuie sur des composants tiers, chacun sous sa propre licence :
-
-| Composant  | Usage                             | Licence              |
-|------------|-----------------------------------|----------------------|
-| Tesseract  | Reconnaissance de caractères      | Apache 2.0           |
-| Pillow     | Traitement des images             | MIT-CMU              |
-| NumPy      | Calcul sur les pixels             | BSD 3 clauses        |
-| Wrangler   | Déploiement du Worker             | MIT ou Apache 2.0    |
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:FCAF17,100:FF2E88&height=100&section=footer" alt="" width="100%">
