@@ -6,6 +6,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/Harrylepap/suivi-passeport-mg/ci.yml?branch=main&style=flat-square&label=ci&labelColor=111111)](https://github.com/Harrylepap/suivi-passeport-mg/actions/workflows/ci.yml)
 ![Coût](https://img.shields.io/badge/co%C3%BBt-0%20%E2%82%AC%20%2F%20mois-007E3A?style=flat-square&labelColor=111111)
 ![Licence](https://img.shields.io/badge/licence-MIT-FC3D32?style=flat-square&labelColor=111111)
+[![Wiki](https://img.shields.io/badge/wiki-documentation-111111?style=flat-square&logo=github&logoColor=white)](https://github.com/Harrylepap/suivi-passeport-mg/wiki)
 
 ![Python](https://img.shields.io/badge/Python-3.13-111111?style=flat-square&logo=python&logoColor=FFFFFF)
 ![Tesseract](https://img.shields.io/badge/Tesseract-OCR-111111?style=flat-square&logo=google&logoColor=FFFFFF)
@@ -33,15 +34,7 @@ Depuis le bot Telegram [@passeport_paris_mg_bot](https://t.me/passeport_paris_mg
 - **être prévenu plus tard** : un numéro pas encore publié est gardé en mémoire, et la personne reçoit un message le jour où il apparaît ;
 - **recevoir chaque nouvelle publication**, avec les listes du jour et le rappel de la publication précédente.
 
-| Commande            | Effet                                         |
-|---------------------|-----------------------------------------------|
-| `/start`            | Présente le service                           |
-| `/derniere`         | Renvoie la dernière liste publiée             |
-| `/suivis`           | Affiche les numéros suivis, avec leur retrait |
-| `/confidentialite`  | Données enregistrées et droits                |
-| `/stop`             | Désinscrit et efface toutes les données       |
-
-Service bénévole, indépendant de l'Ambassade. Les [listes officielles](https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce) font foi.
+Service bénévole, indépendant de l'Ambassade. Les [listes officielles](https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce) font foi. Mode d'emploi complet dans le [wiki](https://github.com/Harrylepap/suivi-passeport-mg/wiki/01-Utiliser-le-bot).
 
 ## En chiffres
 
@@ -200,113 +193,19 @@ Unitaires ──┬── Intégration ──┐
 | API Telegram | Gratuite, sans limite de messages | Toutes les notifications |
 | **Total** | | **0 € par mois** |
 
-## Structure du dépôt
+## Pour aller plus loin
 
-```
-check.py                             relevé, lecture des affiches, diffusion
-annonces.json                        base des affiches et des numéros lus
-requirements.txt                     dépendances Python, versions figées
-requirements-dev.txt                 dépendances de test : behave, coverage
-tests/unitaires/                     tests unitaires du relevé
-tests/integration/                   tests d'intégration du relevé
-tests/outils/                        site, Telegram et Worker simulés ou locaux
-tests/fixtures/                      affiches de référence et numéros attendus
-features/                            scénarios Gherkin de bout en bout
-worker/src/index.js                  réponses aux messages (Worker Cloudflare)
-worker/migrations/                   schéma de la base D1
-worker/test/                         tests unitaires, d'intégration et d'API du Worker
-worker/wrangler.toml                 configuration du Worker
-analytics/requetes.sql               requêtes d'analyse d'usage
-assets/                              bannière, diagrammes de séquence, captures de tests
-docs/registre-des-traitements.md     registre RGPD
-.github/workflows/check.yml          relevé planifié
-.github/workflows/ci.yml             tests, release et déploiement
-.github/workflows/sauvegarde.yml     sauvegarde hebdomadaire chiffrée
-.github/workflows/branche-cible.yml  contrôle de la branche des contributions
-```
+Le [wiki](https://github.com/Harrylepap/suivi-passeport-mg/wiki) détaille chaque brique et la façon d'exploiter le service :
 
-## Installer sa propre instance
-
-Prérequis : un bot Telegram créé auprès de BotFather, un compte Cloudflare, un compte GitHub, Node.js, Python 3.11 ou plus récent, Tesseract.
-
-1. **Créer le stockage et déployer le Worker**
-
-   ```
-   cd worker
-   npx wrangler login
-   npm ci
-   npx wrangler kv namespace create passeport-bot
-   npx wrangler d1 create passeport-bot
-   ```
-
-   Reporter les deux identifiants obtenus dans `wrangler.toml`, puis :
-
-   ```
-   npx wrangler d1 migrations apply passeport-bot --remote
-   npx wrangler deploy
-   ```
-
-2. **Définir les secrets du Worker**
-
-   ```
-   npx wrangler secret put TELEGRAM_BOT_TOKEN
-   npx wrangler secret put WEBHOOK_SECRET
-   npx wrangler secret put ADMIN_SECRET
-   ```
-
-   `WEBHOOK_SECRET` et `ADMIN_SECRET` sont deux chaînes aléatoires. La première authentifie les appels de Telegram, la seconde ceux du relevé.
-
-3. **Publier la base et brancher Telegram sur le Worker**
-
-   Avec `TELEGRAM_BOT_TOKEN`, `WORKER_URL`, `ADMIN_SECRET` et `WEBHOOK_SECRET` dans l'environnement :
-
-   ```
-   pip install -r requirements.txt
-   python check.py --publier
-   python check.py --setup
-   ```
-
-4. **Configurer le dépôt GitHub**
-
-   | Secret                  | Rôle                                                              |
-   |-------------------------|-------------------------------------------------------------------|
-   | `TELEGRAM_BOT_TOKEN`    | Jeton du bot                                                      |
-   | `WORKER_URL`            | Adresse du Worker                                                 |
-   | `ADMIN_SECRET`          | Secret partagé avec le Worker                                     |
-   | `TELEGRAM_CHAT_ID`      | Conversation de l'administrateur, pour les alertes                |
-   | `CLOUDFLARE_API_TOKEN`  | Jeton Cloudflare avec les droits Workers, KV et D1 en écriture    |
-   | `SAUVEGARDE_PHRASE`     | Phrase secrète de chiffrement des sauvegardes                     |
-
-   Et une variable, `CONTACT` : le pseudo Telegram affiché par `/confidentialite` pour les demandes RGPD.
-
-Pour restaurer une sauvegarde dans une base vide :
-
-```
-openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in AAAA-MM-JJ.tar.gz.enc | tar -xzf -
-cd worker
-npx wrangler d1 execute passeport-bot --remote --file ../base.sql
-```
-
-Options de `check.py` :
-
-| Option       | Effet                                                            |
-|--------------|------------------------------------------------------------------|
-| (aucune)     | Relevé complet : détection, lecture, publication, diffusion      |
-| `--dry-run`  | Affiche les nouvelles affiches sans rien envoyer ni enregistrer  |
-| `--publier`  | Envoie la base au Worker                                         |
-| `--setup`    | Configure le webhook, le menu et la présentation du bot          |
-
-## Contribuer
-
-Les demandes de fusion se proposent sur la branche `develop`, voir [CONTRIBUTING.md](CONTRIBUTING.md).
+| Page | La question qu'elle traite |
+|---|---|
+| [Lire les affiches](https://github.com/Harrylepap/suivi-passeport-mg/wiki/03-Lire-les-affiches) | Comment extraire des numéros fiables d'images hétérogènes ? |
+| [Le Worker](https://github.com/Harrylepap/suivi-passeport-mg/wiki/04-Le-Worker) | Comment répondre instantanément, sans serveur ? |
+| [Le relevé](https://github.com/Harrylepap/suivi-passeport-mg/wiki/05-Le-releve) | Comment surveiller le site deux fois par jour sans le solliciter ? |
+| [Exploiter](https://github.com/Harrylepap/suivi-passeport-mg/wiki/08-Exploiter) | Que faire quand quelque chose ne va pas ? |
+| [Décisions](https://github.com/Harrylepap/suivi-passeport-mg/wiki/10-Decisions) | Pourquoi les choses sont-elles ainsi ? |
+| [Installer](https://github.com/Harrylepap/suivi-passeport-mg/wiki/11-Installer) | Comment faire tourner sa propre instance ? |
 
 ## Licence
 
-Code sous licence MIT, voir [LICENSE](LICENSE). Les listes et les images restent la propriété de l'Ambassade de Madagascar en France.
-
-| Composant  | Usage                         | Licence           |
-|------------|-------------------------------|-------------------|
-| Tesseract  | Reconnaissance de caractères  | Apache 2.0        |
-| Pillow     | Traitement des images         | MIT-CMU           |
-| NumPy      | Calcul sur les pixels         | BSD 3 clauses     |
-| Wrangler   | Déploiement du Worker         | MIT ou Apache 2.0 |
+Code sous licence MIT. Les listes et les images restent la propriété de l'Ambassade de Madagascar en France. Contributions sur la branche `develop`, voir [CONTRIBUTING.md](CONTRIBUTING.md).
