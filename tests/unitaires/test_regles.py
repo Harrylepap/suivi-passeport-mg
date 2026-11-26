@@ -115,6 +115,37 @@ class BilanDuReleveTest(unittest.TestCase):
         texte = check.bilan_releve({"annonces": [nouvelle]}, [nouvelle])
         self.assertIn("1 nouvelle(s) affiche(s)", texte)
         self.assertIn("• BEG 2026-067 · 22 numéros", texte)
+        self.assertIn("Bot opérationnel.", texte)
+
+    def test_anomalies_signalees(self):
+        texte = check.bilan_releve({"annonces": []}, [], ["le Worker ne répond pas"])
+        self.assertIn("⚠️ Bot en difficulté :\n• le Worker ne répond pas", texte)
+        self.assertNotIn("Bot opérationnel", texte)
+
+
+class EtatDuWebhookTest(unittest.TestCase):
+    """Analyse de l'état du webhook renvoyé par Telegram."""
+
+    URL = "https://bot.exemple.workers.dev"
+    MAINTENANT = 1_800_000_000
+
+    def anomalies(self, **info):
+        return check.anomalies_webhook({"url": self.URL + "/webhook", **info}, self.URL, self.MAINTENANT)
+
+    def test_webhook_sain(self):
+        self.assertEqual(self.anomalies(pending_update_count=0), [])
+
+    def test_webhook_debranche(self):
+        self.assertEqual(len(check.anomalies_webhook({"url": ""}, self.URL, self.MAINTENANT)), 1)
+
+    def test_messages_en_attente(self):
+        self.assertIn("25 messages en attente de traitement", self.anomalies(pending_update_count=25))
+
+    def test_erreur_recente_signalee_ancienne_ignoree(self):
+        recente = self.anomalies(last_error_date=self.MAINTENANT - 600, last_error_message="Bad Gateway")
+        ancienne = self.anomalies(last_error_date=self.MAINTENANT - 3 * 86400, last_error_message="Bad Gateway")
+        self.assertEqual(recente, ["erreur récente de Telegram : Bad Gateway"])
+        self.assertEqual(ancienne, [])
 
 
 if __name__ == "__main__":
