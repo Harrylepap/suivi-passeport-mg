@@ -124,7 +124,7 @@ Chaque relevé fait un seul appel à l'interface qui alimente la page des annonc
 
 ## Tests
 
-La stratégie suit celle de mon [engineering playbook](https://github.com/Harrylepap/engineering-playbook/blob/main/03-tester.md) : chaque niveau répond à une seule question. Détails dans [docs/strategie-de-test.md](docs/strategie-de-test.md).
+La stratégie suit celle de mon [engineering playbook](https://github.com/Harrylepap/engineering-playbook/blob/main/03-tester.md) : chaque niveau répond à une seule question.
 
 | Niveau | La question | Ce qu'il touche | Tests |
 |---|---|---|---|
@@ -219,7 +219,6 @@ worker/wrangler.toml                 configuration du Worker
 analytics/requetes.sql               requêtes d'analyse d'usage
 assets/                              bannière, diagrammes de séquence, captures de tests
 docs/registre-des-traitements.md     registre RGPD
-docs/strategie-de-test.md            stratégie de test
 .github/workflows/check.yml          relevé planifié
 .github/workflows/ci.yml             tests, release et déploiement
 .github/workflows/sauvegarde.yml     sauvegarde hebdomadaire chiffrée

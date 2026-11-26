@@ -22,7 +22,7 @@ Toute demande de fusion se propose donc sur `develop`. Une demande ouverte direc
    cd .. && PYTHONPATH=. python -m behave
    ```
 
-   La stratégie de test est décrite dans [docs/strategie-de-test.md](docs/strategie-de-test.md). Un comportement nouveau arrive avec ses tests, au bon niveau, et un bug corrigé avec le test qui l'aurait attrapé.
+   La stratégie de test est celle du [playbook](https://github.com/Harrylepap/engineering-playbook/blob/main/03-tester.md) : unitaires `*Test`, intégration `*IT`, API `*ApiScenario`, bout en bout en Gherkin dans `features/`. Un comportement nouveau arrive avec ses tests, au bon niveau, et un bug corrigé avec le test qui l'aurait attrapé.
 
 3. Ouvrez une demande de fusion vers `develop`, en expliquant le problème résolu.
 
