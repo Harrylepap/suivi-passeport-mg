@@ -437,6 +437,24 @@ def relever(dry=False):
         print("Rien de nouveau")
     publier_base(base)
     purger()
+    alerter_admin(bilan_releve(base, [f for f, _ in elements]))
+
+
+def bilan_releve(base, nouvelles):
+    """Résume un relevé pour l'administrateur : nouvelles affiches, ou rappel de la dernière connue."""
+    if nouvelles:
+        lignes = "\n".join(html.unescape(ligne_liste(f)) for f in nouvelles)
+        return f"Relevé terminé : {len(nouvelles)} nouvelle(s) affiche(s).\n{lignes}"
+    listes = [f for f in base["annonces"] if f["numeros"]]
+    if not listes:
+        return "Relevé terminé : aucune nouvelle affiche."
+    derniere = listes[-1]
+    jour = jour_publication(derniere)
+    quand = f" du {jour:%d/%m/%Y}" if jour else ""
+    return (
+        "Relevé terminé : aucune nouvelle affiche.\n"
+        f"Dernière publication : {html.unescape(nom_court(derniere))}{quand}."
+    )
 
 
 def configurer_bot():

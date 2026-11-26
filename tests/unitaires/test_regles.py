@@ -101,5 +101,21 @@ class MessageDePublicationTest(unittest.TestCase):
         self.assertNotIn("Publication précédente", texte)
 
 
+class BilanDuReleveTest(unittest.TestCase):
+    """Message envoyé à l'administrateur à la fin de chaque relevé."""
+
+    def test_sans_nouvelle_affiche(self):
+        base = {"annonces": [fiche("065", "20261124181601"), fiche("066", "20261124181658")]}
+        texte = check.bilan_releve(base, [])
+        self.assertIn("aucune nouvelle affiche", texte)
+        self.assertIn("Dernière publication : BEG 2026-066 du 24/11/2026", texte)
+
+    def test_avec_nouvelles_affiches(self):
+        nouvelle = fiche("067", "20261126101000", 22)
+        texte = check.bilan_releve({"annonces": [nouvelle]}, [nouvelle])
+        self.assertIn("1 nouvelle(s) affiche(s)", texte)
+        self.assertIn("• BEG 2026-067 · 22 numéros", texte)
+
+
 if __name__ == "__main__":
     unittest.main()
