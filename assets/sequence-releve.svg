@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="690" viewBox="0 0 1100 690" role="img" aria-label="Relevé de 11 h et 19 h">
+<style>.msg{opacity:0;animation-duration:13.0s;animation-iteration-count:infinite;animation-timing-function:ease-out}@keyframes a0{0%,4.62%{opacity:0;transform:translateY(6px)}6.54%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m0{animation-name:a0}@keyframes a1{0%,12.31%{opacity:0;transform:translateY(6px)}14.23%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m1{animation-name:a1}@keyframes a2{0%,20.00%{opacity:0;transform:translateY(6px)}21.92%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m2{animation-name:a2}@keyframes a3{0%,27.69%{opacity:0;transform:translateY(6px)}29.62%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m3{animation-name:a3}@keyframes a4{0%,35.38%{opacity:0;transform:translateY(6px)}37.31%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m4{animation-name:a4}@keyframes a5{0%,43.08%{opacity:0;transform:translateY(6px)}45.00%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m5{animation-name:a5}@keyframes a6{0%,50.77%{opacity:0;transform:translateY(6px)}52.69%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m6{animation-name:a6}@keyframes a7{0%,58.46%{opacity:0;transform:translateY(6px)}60.38%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m7{animation-name:a7}@keyframes a8{0%,66.15%{opacity:0;transform:translateY(6px)}68.08%,93.85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m8{animation-name:a8}</style>
+<defs>
+<marker id="pr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FC3D32"/></marker>
+<marker id="pv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#007E3A"/></marker>
+<marker id="pg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6B7280"/></marker>
+</defs>
+<rect width="1100" height="690" rx="12" fill="#FFFFFF" stroke="#E5E7EB"/>
+<rect x="0" y="0" width="6" height="690" fill="#FC3D32"/>
+<rect x="0" y="345.0" width="6" height="345.0" fill="#007E3A"/>
+<text x="90" y="40" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#14181F">Relevé de 11 h et 19 h</text>
+<line x1="150" y1="92" x2="150" y2="664" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="70" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="150" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">GitHub Actions</text>
+<line x1="350" y1="92" x2="350" y2="664" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="270" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="350" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Site Ambassade</text>
+<line x1="550" y1="92" x2="550" y2="664" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="470" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="550" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Tesseract</text>
+<line x1="750" y1="92" x2="750" y2="664" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="670" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="750" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Worker</text>
+<line x1="950" y1="92" x2="950" y2="664" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="870" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="950" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Telegram</text>
+<g class="msg m0">
+<circle cx="88" cy="150" r="11" fill="#FC3D32"/>
+<text x="88" y="154" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">1</text>
+<line x1="153" y1="154" x2="346" y2="154" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="250.0" y="145" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">1 requête : liste des annonces</text>
+</g>
+<g class="msg m1">
+<circle cx="88" cy="208" r="11" fill="#007E3A"/>
+<text x="88" y="212" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">2</text>
+<line x1="347" y1="212" x2="154" y2="212" stroke="#007E3A" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#pv)"/>
+<text x="250.0" y="203" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">affiches en ligne (JSON)</text>
+</g>
+<g class="msg m2">
+<circle cx="88" cy="266" r="11" fill="#6B7280"/>
+<text x="88" y="270" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">3</text>
+<path d="M150 256 h46 v22 h-44" fill="none" stroke="#6B7280" stroke-width="2.2" marker-end="url(#pg)"/>
+<text x="204" y="272" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">comparer à annonces.json</text>
+</g>
+<g class="msg m3">
+<circle cx="88" cy="324" r="11" fill="#FC3D32"/>
+<text x="88" y="328" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">4</text>
+<line x1="153" y1="328" x2="346" y2="328" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="250.0" y="319" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">télécharger la nouvelle affiche</text>
+</g>
+<g class="msg m4">
+<circle cx="88" cy="382" r="11" fill="#FC3D32"/>
+<text x="88" y="386" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">5</text>
+<line x1="153" y1="386" x2="546" y2="386" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="350.0" y="377" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">6 lectures prétraitées</text>
+</g>
+<g class="msg m5">
+<circle cx="88" cy="440" r="11" fill="#007E3A"/>
+<text x="88" y="444" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">6</text>
+<line x1="547" y1="444" x2="154" y2="444" stroke="#007E3A" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#pv)"/>
+<text x="350.0" y="435" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">vote : 25 numéros</text>
+</g>
+<g class="msg m6">
+<circle cx="88" cy="498" r="11" fill="#FC3D32"/>
+<text x="88" y="502" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">7</text>
+<line x1="153" y1="502" x2="746" y2="502" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="450.0" y="493" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">publier la base</text>
+</g>
+<g class="msg m7">
+<circle cx="88" cy="556" r="11" fill="#FC3D32"/>
+<text x="88" y="560" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">8</text>
+<line x1="153" y1="560" x2="946" y2="560" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="550.0" y="551" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">annonce aux abonnés</text>
+</g>
+<g class="msg m8">
+<circle cx="88" cy="614" r="11" fill="#FC3D32"/>
+<text x="88" y="618" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">9</text>
+<line x1="153" y1="618" x2="946" y2="618" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="550.0" y="609" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">alerte aux numéros suivis</text>
+</g>
+</svg>

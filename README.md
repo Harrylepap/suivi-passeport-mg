@@ -1,16 +1,16 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:FF2E88,100:FCAF17&height=180&section=header&text=Passeport%20Madagascar%20Paris&fontColor=ffffff&fontSize=40&fontAlignY=35&desc=OCR%20%C2%B7%20serverless%20%C2%B7%200%20%E2%82%AC%20par%20mois&descAlignY=58&descSize=18" alt="Passeport Madagascar Paris" width="100%">
+<img src="assets/banniere.svg" alt="Passeport Madagascar Paris" width="100%">
 
 [![Telegram](https://img.shields.io/badge/Telegram-@passeport__paris__mg__bot-26A5E4?style=flat-square&logo=telegram&logoColor=white)](https://t.me/passeport_paris_mg_bot)
 [![CI](https://img.shields.io/github/actions/workflow/status/Harrylepap/suivi-passeport-mg/ci.yml?branch=main&style=flat-square&label=ci&labelColor=111111)](https://github.com/Harrylepap/suivi-passeport-mg/actions/workflows/ci.yml)
-![Coût](https://img.shields.io/badge/co%C3%BBt-0%20%E2%82%AC%20%2F%20mois-FCAF17?style=flat-square&labelColor=111111)
-![Licence](https://img.shields.io/badge/licence-MIT-FF2E88?style=flat-square&labelColor=111111)
+![Coût](https://img.shields.io/badge/co%C3%BBt-0%20%E2%82%AC%20%2F%20mois-007E3A?style=flat-square&labelColor=111111)
+![Licence](https://img.shields.io/badge/licence-MIT-FC3D32?style=flat-square&labelColor=111111)
 
-![Python](https://img.shields.io/badge/Python-3.13-111111?style=flat-square&logo=python&logoColor=FCAF17)
-![Tesseract](https://img.shields.io/badge/Tesseract-OCR-111111?style=flat-square&logo=google&logoColor=FCAF17)
+![Python](https://img.shields.io/badge/Python-3.13-111111?style=flat-square&logo=python&logoColor=FFFFFF)
+![Tesseract](https://img.shields.io/badge/Tesseract-OCR-111111?style=flat-square&logo=google&logoColor=FFFFFF)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers%20%C2%B7%20KV%20%C2%B7%20D1-111111?style=flat-square&logo=cloudflare&logoColor=F38020)
-![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-111111?style=flat-square&logo=githubactions&logoColor=FF2E88)
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-111111?style=flat-square&logo=githubactions&logoColor=FFFFFF)
 
 <br>
 
@@ -76,6 +76,16 @@ Le système est coupé en deux parties qui n'ont pas les mêmes besoins.
 - **Le relevé** fait le travail lourd, une reconnaissance de caractères qui prend plusieurs secondes par image. Il tourne sur GitHub Actions, deux fois par jour : Tesseract y est disponible, le calcul est gratuit, et rien ne tourne entre deux passages.
 - **Les réponses** doivent être immédiates et permanentes. Elles reviennent à un Worker Cloudflare, exécuté à la demande à chaque message, sans serveur à maintenir. Pour répondre, le Worker consulte la base déjà constituée, jamais les listes du site.
 
+## Déroulé
+
+Une recherche, du message de l'utilisateur à la réponse :
+
+<p align="center"><img src="assets/sequence-recherche.svg" alt="Diagramme de séquence : recherche d'un numéro de quittance" width="100%"></p>
+
+Un relevé, de la détection d'une affiche à l'alerte des personnes concernées :
+
+<p align="center"><img src="assets/sequence-releve.svg" alt="Diagramme de séquence : relevé des annonces" width="100%"></p>
+
 ## Ingénierie
 
 ### Lire des numéros sur des images hétérogènes
@@ -125,6 +135,11 @@ Chaque relevé fait un seul appel à l'interface qui alimente la page des annonc
 | Observabilité | Journaux JSON du Worker, consultables dans Cloudflare |
 | Dépendances | Versions figées : `requirements.txt`, `package-lock.json`, actions et image d'exécution |
 
+### Exécution réelle des tests
+
+<p align="center"><img src="assets/tests-releve.svg" alt="Exécution des tests du relevé" width="100%"></p>
+<p align="center"><img src="assets/tests-worker.svg" alt="Exécution des tests du Worker" width="100%"></p>
+
 ## Données personnelles, dès la conception
 
 - **Information** : la commande `/confidentialite` détaille les données enregistrées, leur usage et les droits de chacun.
@@ -156,6 +171,7 @@ worker/migrations/                   schéma de la base D1
 worker/test/                         tests du Worker
 worker/wrangler.toml                 configuration du Worker
 analytics/requetes.sql               requêtes d'analyse d'usage
+assets/                              bannière, diagrammes de séquence, captures de tests
 docs/registre-des-traitements.md     registre RGPD
 .github/workflows/check.yml          relevé planifié
 .github/workflows/ci.yml             tests, release et déploiement
@@ -248,5 +264,3 @@ Code sous licence MIT, voir [LICENSE](LICENSE). Les listes et les images restent
 | Pillow     | Traitement des images         | MIT-CMU           |
 | NumPy      | Calcul sur les pixels         | BSD 3 clauses     |
 | Wrangler   | Déploiement du Worker         | MIT ou Apache 2.0 |
-
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:FCAF17,100:FF2E88&height=100&section=footer" alt="" width="100%">

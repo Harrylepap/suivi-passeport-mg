@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="632" viewBox="0 0 1100 632" role="img" aria-label="Recherche d&#x27;un numéro de quittance">
+<style>.msg{opacity:0;animation-duration:12.0s;animation-iteration-count:infinite;animation-timing-function:ease-out}@keyframes a0{0%,5.00%{opacity:0;transform:translateY(6px)}7.08%,93.33%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m0{animation-name:a0}@keyframes a1{0%,13.33%{opacity:0;transform:translateY(6px)}15.42%,93.33%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m1{animation-name:a1}@keyframes a2{0%,21.67%{opacity:0;transform:translateY(6px)}23.75%,93.33%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m2{animation-name:a2}@keyframes a3{0%,30.00%{opacity:0;transform:translateY(6px)}32.08%,93.33%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m3{animation-name:a3}@keyframes a4{0%,38.33%{opacity:0;transform:translateY(6px)}40.42%,93.33%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m4{animation-name:a4}@keyframes a5{0%,46.67%{opacity:0;transform:translateY(6px)}48.75%,93.33%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m5{animation-name:a5}@keyframes a6{0%,55.00%{opacity:0;transform:translateY(6px)}57.08%,93.33%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m6{animation-name:a6}@keyframes a7{0%,63.33%{opacity:0;transform:translateY(6px)}65.42%,93.33%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(0)}}.m7{animation-name:a7}</style>
+<defs>
+<marker id="pr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FC3D32"/></marker>
+<marker id="pv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#007E3A"/></marker>
+<marker id="pg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6B7280"/></marker>
+</defs>
+<rect width="1100" height="632" rx="12" fill="#FFFFFF" stroke="#E5E7EB"/>
+<rect x="0" y="0" width="6" height="632" fill="#FC3D32"/>
+<rect x="0" y="316.0" width="6" height="316.0" fill="#007E3A"/>
+<text x="90" y="40" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#14181F">Recherche d&#x27;un numéro de quittance</text>
+<line x1="150" y1="92" x2="150" y2="606" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="70" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="150" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Utilisateur</text>
+<line x1="350" y1="92" x2="350" y2="606" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="270" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="350" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Telegram</text>
+<line x1="550" y1="92" x2="550" y2="606" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="470" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="550" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Worker</text>
+<line x1="750" y1="92" x2="750" y2="606" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="670" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="750" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">KV</text>
+<line x1="950" y1="92" x2="950" y2="606" stroke="#D1D5DB" stroke-dasharray="4 5"/>
+<rect x="870" y="58" width="160" height="36" rx="8" fill="#14181F"/>
+<text x="950" y="81" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">D1</text>
+<g class="msg m0">
+<circle cx="88" cy="150" r="11" fill="#FC3D32"/>
+<text x="88" y="154" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">1</text>
+<line x1="153" y1="154" x2="346" y2="154" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="250.0" y="145" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">2026-61191</text>
+</g>
+<g class="msg m1">
+<circle cx="88" cy="208" r="11" fill="#FC3D32"/>
+<text x="88" y="212" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">2</text>
+<line x1="353" y1="212" x2="546" y2="212" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="450.0" y="203" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">webhook signé par secret</text>
+</g>
+<g class="msg m2">
+<circle cx="88" cy="266" r="11" fill="#007E3A"/>
+<text x="88" y="270" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">3</text>
+<line x1="547" y1="270" x2="354" y2="270" stroke="#007E3A" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#pv)"/>
+<text x="450.0" y="261" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">200 OK immédiat</text>
+</g>
+<g class="msg m3">
+<circle cx="88" cy="324" r="11" fill="#FC3D32"/>
+<text x="88" y="328" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">4</text>
+<line x1="553" y1="328" x2="746" y2="328" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="650.0" y="319" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">abonné et base des numéros</text>
+</g>
+<g class="msg m4">
+<circle cx="88" cy="382" r="11" fill="#007E3A"/>
+<text x="88" y="386" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">5</text>
+<line x1="747" y1="386" x2="554" y2="386" stroke="#007E3A" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#pv)"/>
+<text x="650.0" y="377" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">publié dans BEG 2026-066</text>
+</g>
+<g class="msg m5">
+<circle cx="88" cy="440" r="11" fill="#6B7280"/>
+<text x="88" y="444" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">6</text>
+<line x1="553" y1="444" x2="946" y2="444" stroke="#6B7280" stroke-width="2.2" marker-end="url(#pg)"/>
+<text x="750.0" y="435" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">journaliser la recherche</text>
+</g>
+<g class="msg m6">
+<circle cx="88" cy="498" r="11" fill="#FC3D32"/>
+<text x="88" y="502" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">7</text>
+<line x1="547" y1="502" x2="354" y2="502" stroke="#FC3D32" stroke-width="2.2" marker-end="url(#pr)"/>
+<text x="450.0" y="493" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">sendPhoto, file_id en cache</text>
+</g>
+<g class="msg m7">
+<circle cx="88" cy="556" r="11" fill="#007E3A"/>
+<text x="88" y="560" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">8</text>
+<line x1="347" y1="560" x2="154" y2="560" stroke="#007E3A" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#pv)"/>
+<text x="250.0" y="551" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#14181F">2026-61191 est publié + affiche</text>
+</g>
+</svg>

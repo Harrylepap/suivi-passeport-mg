@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="260" viewBox="0 0 1200 260" role="img" aria-label="Passeport Madagascar Paris">
+  <rect width="1200" height="260" fill="#FFFFFF"/>
+  <rect x="0.5" y="0.5" width="1199" height="259" fill="none" stroke="#E5E7EB"/>
+  <rect x="1080" y="0" width="120" height="130" fill="#FC3D32"/>
+  <rect x="1080" y="130" width="120" height="130" fill="#007E3A"/>
+  <g transform="translate(70 62)">
+    <rect width="104" height="136" rx="10" fill="#007E3A"/>
+    <rect x="8" y="8" width="88" height="120" rx="6" fill="none" stroke="#FFFFFF" stroke-opacity="0.35"/>
+    <circle cx="52" cy="58" r="24" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+    <ellipse cx="52" cy="58" rx="10" ry="24" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <line x1="28" y1="58" x2="76" y2="58" stroke="#FFFFFF" stroke-width="2"/>
+    <rect x="30" y="98" width="44" height="6" rx="3" fill="#FFFFFF"/>
+    <rect x="38" y="110" width="28" height="4" rx="2" fill="#FFFFFF" fill-opacity="0.6"/>
+  </g>
+  <text x="214" y="108" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="46" font-weight="700" fill="#14181F">Passeport Madagascar Paris</text>
+  <text x="214" y="150" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" fill="#6B7280">Suivi des passeports à retirer, en un message Telegram</text>
+  <g font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, monospace" font-size="16" font-weight="600">
+    <rect x="214" y="176" width="150" height="34" rx="17" fill="#FC3D32" fill-opacity="0.1"/>
+    <text x="289" y="198" text-anchor="middle" fill="#FC3D32">OCR Tesseract</text>
+    <rect x="376" y="176" width="196" height="34" rx="17" fill="#007E3A" fill-opacity="0.1"/>
+    <text x="474" y="198" text-anchor="middle" fill="#007E3A">Cloudflare Workers</text>
+    <rect x="584" y="176" width="150" height="34" rx="17" fill="#14181F" fill-opacity="0.06"/>
+    <text x="659" y="198" text-anchor="middle" fill="#14181F">0 € par mois</text>
+  </g>
+</svg>
