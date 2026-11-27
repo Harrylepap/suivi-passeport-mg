@@ -92,7 +92,56 @@ export default {
 
     return new Response("Bot en ligne");
   },
+
+  /** Tâche planifiée : lance le relevé GitHub à 10 h et 19 h, heure de Paris. */
+  async scheduled(evenement, env, ctx) {
+    ctx.waitUntil(
+      declencherReleve(env, new Date(evenement.scheduledTime)).catch((e) =>
+        console.error(JSON.stringify({ evenement: "erreur_declenchement", message: e.message })),
+      ),
+    );
+  },
 };
+
+/** Indique si une date tombe à 10 h ou à 19 h, heure de Paris, été comme hiver. */
+export function estHeureDeReleve(date) {
+  const heure = Number(
+    new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", hour: "numeric", hourCycle: "h23" })
+      .formatToParts(date)
+      .find((partie) => partie.type === "hour").value,
+  );
+  return heure === 10 || heure === 19;
+}
+
+/** Lance le workflow du relevé sur GitHub ; prévient l'administrateur si GitHub refuse. */
+export async function declencherReleve(env, date) {
+  if (!estHeureDeReleve(date)) return false;
+  const api = (env.GITHUB_API || "https://api.github.com").replace(/\/$/, "");
+  const depot = env.GITHUB_DEPOT || "Harrylepap/suivi-passeport-mg";
+  const reponse = await fetch(`${api}/repos/${depot}/actions/workflows/check.yml/dispatches`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.GITHUB_DISPATCH_TOKEN}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "User-Agent": "passeport-bot",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ ref: "main" }),
+  });
+  if (reponse.status === 204) {
+    console.log(JSON.stringify({ evenement: "releve_declenche" }));
+    return true;
+  }
+  if (env.ADMIN_CHAT) {
+    await envoyerTexte(
+      env,
+      env.ADMIN_CHAT,
+      `Le lancement du relevé a échoué (GitHub ${reponse.status}). Lancez-le à la main depuis l'onglet Actions, et vérifiez le jeton GITHUB_DISPATCH_TOKEN.`,
+    ).catch(() => {});
+  }
+  throw new Error(`GitHub ${reponse.status} : ${await reponse.text()}`);
+}
 
 /** Routes réservées au relevé : publication de la base, liste et suppression d'abonnés. */
 async function admin(request, url, env) {

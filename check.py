@@ -181,13 +181,16 @@ def publier_base(base):
     print(f"Base publiée : {rep['annonces']} annonces")
 
 
-def alerter_admin(texte):
-    """Envoie un message à l'administrateur, sans interrompre le relevé."""
+def alerter_admin(texte, silencieux=False):
+    """Envoie un message à l'administrateur, sans sonnerie si « silencieux », sans interrompre le relevé."""
     chat = os.environ.get("TELEGRAM_CHAT_ID")
     if not chat:
         return
+    champs = {"chat_id": chat, "text": texte, "disable_web_page_preview": "true"}
+    if silencieux:
+        champs["disable_notification"] = "true"
     try:
-        telegram("sendMessage", {"chat_id": chat, "text": texte, "disable_web_page_preview": "true"})
+        telegram("sendMessage", champs)
     except Exception as exc:
         print(f"Alerte non envoyée ({exc})", file=sys.stderr)
 
@@ -437,7 +440,8 @@ def relever(dry=False):
         print("Rien de nouveau")
     publier_base(base)
     purger()
-    alerter_admin(bilan_releve(base, [f for f, _ in elements], verifier_service()))
+    anomalies = verifier_service()
+    alerter_admin(bilan_releve(base, [f for f, _ in elements], anomalies), silencieux=not anomalies)
 
 
 def anomalies_webhook(info, worker_url, maintenant=None):

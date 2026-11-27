@@ -45,7 +45,7 @@ Service bénévole, indépendant de l'Ambassade. Les [listes officielles](https:
 | Numéros aberrants après lecture | de 232 à 1, grâce au prétraitement et au vote |
 | Appels au site de l'Ambassade | 2 par jour, plus 2 téléchargements au plus par nouvelle affiche |
 | Disponibilité du bot | 24 h sur 24, réponse immédiate |
-| Tests automatisés | 54 sur quatre niveaux, de la règle de gestion au parcours complet en Gherkin |
+| Tests automatisés | 59 sur quatre niveaux, de la règle de gestion au parcours complet en Gherkin |
 | Coût d'exploitation | 0 € |
 
 ## Architecture
@@ -57,7 +57,8 @@ flowchart LR
     W <--> KV[(Workers KV<br/>abonnés, suivis)]
     W <--> D1[(D1 SQLite<br/>usage)]
 
-    S[Site de l'Ambassade] -->|1 requête<br/>11 h et 19 h| R[GitHub Actions<br/>relevé Python + Tesseract]
+    W -.->|tâche planifiée<br/>10 h et 19 h| R
+    S[Site de l'Ambassade] -->|1 requête| R[GitHub Actions<br/>relevé Python + Tesseract]
     R -->|base des numéros| W
     R -->|annonces, alertes| TG
     R -->|annonces.json| G[(Dépôt Git)]
@@ -102,14 +103,16 @@ Le réglage a été choisi sur mesures, en comparant une vingtaine de variantes 
 - **Images téléversées une seule fois** : au premier envoi d'une affiche, Telegram renvoie un identifiant de fichier. Il est conservé, et les envois suivants le réutilisent sans retoucher le site de l'Ambassade.
 - **Deux stockages, deux usages** : KV pour les abonnés et leurs numéros suivis, lus à chaque message ; D1, une base SQLite, pour les événements d'usage interrogeables en SQL.
 
-### Une planification qui résiste aux retards
+### Un réveil à l'heure
 
-Les tâches planifiées de GitHub Actions sont assurées « au mieux » : un relevé prévu à 18 h UTC a été lancé un soir à 1 h 54. Le workflow est donc conçu pour tolérer ces retards :
+Le relevé était d'abord confié au planificateur de GitHub Actions. Mesuré sur trois jours, celui-ci l'a lancé avec 7 à 9 heures de retard : la liste de l'après-midi annoncée au milieu de la nuit. GitHub ne garantit aucune heure aux tâches planifiées, et place les dépôts peu actifs en fin de file.
 
-- créneaux décalés de 7 minutes, pour éviter l'heure pile où la plateforme est saturée ;
-- quatre créneaux UTC déclarés, pour couvrir l'heure d'été et l'heure d'hiver ;
-- une garde qui juge le créneau prévu et non l'heure d'arrivée, si bien qu'un relevé en retard s'exécute quand même ;
-- un relevé manqué n'a pas de conséquence : le suivant rattrape toutes les affiches parues entre-temps.
+Le réveil a donc changé de main. Une tâche planifiée du Worker Cloudflare, ponctuelle à la minute, lance le workflow GitHub par son API. Le relevé lui-même ne bouge pas : il tourne toujours sur GitHub, avec Tesseract.
+
+- un seul déclencheur, déclaré à 8 h, 9 h, 17 h et 18 h UTC ; le Worker ne retient que les créneaux qui tombent à 10 h ou 19 h à Paris, été comme hiver ;
+- un jeton GitHub limité à ce dépôt et au seul droit de lancer des workflows ;
+- si GitHub refuse le lancement, l'administrateur est prévenu sur Telegram ;
+- un relevé manqué reste sans conséquence : le suivant rattrape toutes les affiches parues entre-temps.
 
 ### Respect du site source
 
@@ -121,7 +124,7 @@ La stratégie suit celle de mon [engineering playbook](https://github.com/Harryl
 
 | Niveau | La question | Ce qu'il touche | Tests |
 |---|---|---|---|
-| Unitaire `*Test` | Cette règle de gestion est-elle juste ? | Une fonction, sans réseau ni base | 25 |
+| Unitaire `*Test` | Cette règle de gestion est-elle juste ? | Une fonction, sans réseau ni base | 30 |
 | Intégration `*IT` | Ce composant parle-t-il correctement à ses dépendances ? | Tesseract réel, site simulé, base D1 locale | 9 |
 | API `*ApiScenario` | Le contrat tient-il, vu de l'extérieur ? | Le Worker démarré, appelé comme Telegram l'appelle | 15 |
 | Bout en bout | Le parcours utilisateur fonctionne-t-il ? | Relevé, lecture des affiches et Worker réels | 5 scénarios Gherkin |

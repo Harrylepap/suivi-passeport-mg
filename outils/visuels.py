@@ -112,7 +112,7 @@ sequence(
 )
 sequence(
     "sequence-releve",
-    "Relevé de 11 h et 19 h",
+    "Relevé de 10 h et 19 h",
     ["GitHub Actions", "Site Ambassade", "Tesseract", "Worker", "Telegram"],
     [
         (0, 1, "1 requête : liste des annonces", "requete"),
