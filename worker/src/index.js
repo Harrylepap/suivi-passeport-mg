@@ -45,7 +45,7 @@ export const confidentialite = (contact) => [
   "Pour faire fonctionner le bot et l'améliorer, sont conservés :",
   "• votre identifiant de conversation Telegram, votre nom public et votre pseudonyme s'il existe ;",
   "• les numéros de quittance que vous recherchez, la date de chaque recherche et son résultat ;",
-  "• les numéros que vous suivez, jusqu'à leur publication.",
+  "• les numéros que vous suivez, jusqu'à leur publication, puis deux semaines encore pour vous rappeler d'aller retirer votre passeport.",
   "",
   "<b>À quoi cela sert</b>",
   "Répondre à vos recherches, vous prévenir quand votre numéro paraît, mesurer la fréquentation et améliorer le service. Ces données ne sont ni vendues ni transmises à des tiers.",
