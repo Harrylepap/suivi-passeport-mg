@@ -52,6 +52,26 @@ jobs:
             | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -salt -pass env:SAUVEGARDE_PHRASE -out "copies/$jour.tar.gz.enc"
           rm -rf "$clair"
           test -s "copies/$jour.tar.gz.enc"
+      - name: Vérifier que la sauvegarde se restaure
+        run: |
+          jour=$(date -u +%Y-%m-%d)
+          essai=$(mktemp -d)
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -pass env:SAUVEGARDE_PHRASE \
+            -in "copies/$jour.tar.gz.enc" | tar -xzf - -C "$essai"
+          jq -e '.abonnes | type == "array"' "$essai/abonnes.json" > /dev/null
+          cd worker
+          npx wrangler d1 execute passeport-bot --local --persist-to "$essai/d1" --file "$essai/base.sql" > /dev/null
+          compter() { npx wrangler d1 execute passeport-bot "$@" --json --command "SELECT COUNT(*) AS n FROM $table" | jq '.[0].results[0].n'; }
+          for table in personnes evenements; do
+            restaure=$(compter --local --persist-to "$essai/d1")
+            production=$(compter --remote)
+            echo "$table : $restaure lignes restaurées, $production en production"
+            if [ "$restaure" -gt "$production" ] || [ $((production - restaure)) -gt 20 ]; then
+              echo "::error::La restauration de $table ne correspond pas à la production"
+              exit 1
+            fi
+          done
+          rm -rf "$essai"
       - name: Garder les quatre dernières semaines
         run: |
           if [ -d precedentes ]; then

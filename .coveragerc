@@ -1,5 +1,5 @@
 [run]
-source = check
+source = check, releve
 
 [report]
 show_missing = false

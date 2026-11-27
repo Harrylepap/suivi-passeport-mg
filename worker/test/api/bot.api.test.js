@@ -164,6 +164,60 @@ describe("DesinscriptionApiScenario", () => {
   });
 });
 
+describe("RappelApiScenario", () => {
+  const ilYa = (jours) => new Date(Date.now() - jours * 86400000).toISOString();
+
+  test("un rappel part quatorze jours après la publication, une seule fois", async () => {
+    const mur = nouveauChat();
+    const recent = nouveauChat();
+    await bot.admin("POST", "/admin/rappels", {
+      rappels: [
+        { chat: mur, numero: "2026-61191", liste: "BEG 2026-066", du: ilYa(15) },
+        { chat: recent, numero: "2026-61330", liste: "BEG 2026-066", du: ilYa(3) },
+      ],
+    });
+    const premier = await (await bot.admin("POST", "/admin/rappels/envoyer", {})).json();
+    assert.ok(premier.envoyes >= 1);
+    const [rappel] = await telegram.attendre(mur);
+    assert.match(rappel.text, /Rappel : votre passeport vous attend/);
+    assert.match(rappel.text, /2026-61191/);
+    assert.equal(telegram.pour(recent).length, 0);
+    await bot.admin("POST", "/admin/rappels/envoyer", {});
+    assert.equal(telegram.pour(mur).length, 1);
+  });
+
+  test("/stop annule les rappels en attente", async () => {
+    const chat = nouveauChat();
+    await bot.admin("POST", "/admin/rappels", {
+      rappels: [{ chat, numero: "2026-61191", liste: "BEG 2026-066", du: ilYa(20) }],
+    });
+    await bot.message(chat, "/stop");
+    await telegram.attendre(chat);
+    await bot.admin("POST", "/admin/rappels/envoyer", {});
+    assert.equal(telegram.pour(chat).length, 1);
+  });
+});
+
+describe("LimiteApiScenario", () => {
+  test("au-delà de trente recherches en une heure, le bot demande de patienter", async () => {
+    const chat = nouveauChat();
+    for (let i = 0; i < 30; i++) await bot.message(chat, "2026-61191");
+    await telegram.attendre(chat, 30, 30000);
+    await bot.message(chat, "2026-61191");
+    const messages = await telegram.attendre(chat, 31);
+    assert.match(messages.at(-1).text, /Réessayez dans une heure/);
+  });
+
+  test("les commandes restent disponibles pendant la limite", async () => {
+    const chat = nouveauChat();
+    for (let i = 0; i < 31; i++) await bot.message(chat, "2026-61191");
+    await telegram.attendre(chat, 31, 30000);
+    await bot.message(chat, "/suivis");
+    const messages = await telegram.attendre(chat, 32);
+    assert.match(messages.at(-1).text, /Vos numéros suivis/);
+  });
+});
+
 describe("AdministrationApiScenario", () => {
   test("les routes d'administration exigent le secret", async () => {
     const sans = await fetch(`${worker.url}/admin/abonnes`);

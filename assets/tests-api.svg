@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="618" viewBox="0 0 980 618" role="img" aria-label="API · Worker démarré, appelé comme Telegram et le relevé">
-<rect width="980" height="618" rx="12" fill="#0D1117"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="750" viewBox="0 0 980 750" role="img" aria-label="API · Worker démarré, appelé comme Telegram et le relevé">
+<rect width="980" height="750" rx="12" fill="#0D1117"/>
 <rect x="0" y="0" width="490.0" height="4" fill="#FC3D32"/><rect x="490.0" y="0" width="490.0" height="4" fill="#007E3A"/>
 <circle cx="24" cy="26" r="6" fill="#FF5F57"/><circle cx="44" cy="26" r="6" fill="#FEBC2E"/><circle cx="64" cy="26" r="6" fill="#28C840"/>
 <text x="490.0" y="31" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="13" fill="#8B949E">API · Worker démarré, appelé comme Telegram et le relevé</text>
@@ -23,8 +23,14 @@
 <text x="42" y="448" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ la politique décrit les données, les droits et le contact configuré</text>
 <text x="24" y="470" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">DesinscriptionApiScenario</text>
 <text x="42" y="492" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ /stop désabonne la personne</text>
-<text x="24" y="514" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">AdministrationApiScenario</text>
-<text x="42" y="536" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ les routes d&#x27;administration exigent le secret</text>
-<text x="42" y="558" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ le bot n&#x27;expose aucune commande de statistiques, même à l&#x27;administrateur</text>
-<text x="24" y="580" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">15 réussis · 0 échec</text>
+<text x="24" y="514" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">RappelApiScenario</text>
+<text x="42" y="536" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un rappel part quatorze jours après la publication, une seule fois</text>
+<text x="42" y="558" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ /stop annule les rappels en attente</text>
+<text x="24" y="580" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">LimiteApiScenario</text>
+<text x="42" y="602" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ au-delà de trente recherches en une heure, le bot demande de patienter</text>
+<text x="42" y="624" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ les commandes restent disponibles pendant la limite</text>
+<text x="24" y="646" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">AdministrationApiScenario</text>
+<text x="42" y="668" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ les routes d&#x27;administration exigent le secret</text>
+<text x="42" y="690" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ le bot n&#x27;expose aucune commande de statistiques, même à l&#x27;administrateur</text>
+<text x="24" y="712" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">19 réussis · 0 échec</text>
 </svg>
