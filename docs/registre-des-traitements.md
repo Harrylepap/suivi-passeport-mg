@@ -32,8 +32,9 @@ Le service est indépendant de l'Ambassade de Madagascar en France. Il ne traite
 |---|---|---|
 | Identifiant de conversation Telegram | Telegram, à chaque message | Cloudflare Workers KV |
 | Numéros de quittance suivis (5 au plus) | Saisis par la personne | Cloudflare Workers KV |
+| Rappel de retrait : numéro publié, liste et date de l'alerte | Publication d'un numéro suivi | Cloudflare Workers KV |
 
-**Durée de conservation** : jusqu'à la commande `/stop`, ou 12 mois sans aucun message de la personne. Effacement automatique dans les deux cas.
+**Durée de conservation** : jusqu'à la commande `/stop`, ou 12 mois sans aucun message de la personne. Effacement automatique dans les deux cas. Un rappel de retrait est effacé dès son envoi, quatorze jours après la publication du numéro.
 
 ## Traitement n° 2 : mesure d'usage et amélioration du service
 
@@ -74,7 +75,7 @@ Seul le responsable du traitement accède aux données, par la console Cloudflar
 
 ## Sauvegardes
 
-Une copie de la base et de la liste des abonnés est exportée chaque dimanche, chiffrée en AES-256 avec une phrase secrète connue du seul responsable, puis déposée dans la branche `sauvegarde` du dépôt GitHub. Seules les quatre dernières copies sont gardées, sans historique. Une personne effacée disparaît donc des sauvegardes en quatre semaines au plus.
+Une copie de la base et de la liste des abonnés est exportée chaque dimanche, chiffrée en AES-256 avec une phrase secrète connue du seul responsable, puis déposée dans la branche `sauvegarde` du dépôt GitHub. Elle est aussitôt restaurée dans une base vierge, éphémère, pour vérifier qu'elle est complète. Seules les quatre dernières copies sont gardées, sans historique. Une personne effacée disparaît donc des sauvegardes en quatre semaines au plus.
 
 ## Journaux techniques
 
@@ -106,3 +107,4 @@ Toute personne peut aussi saisir la CNIL : www.cnil.fr.
 | 26/11/2026 | Création du registre |
 | 26/11/2026 | Mesure d'usage : base légale de l'intérêt légitime |
 | 26/11/2026 | Dépôt rendu public, sauvegardes chiffrées |
+| 27/11/2026 | Rappel de retrait deux semaines après la publication ; restauration des sauvegardes vérifiée chaque semaine |

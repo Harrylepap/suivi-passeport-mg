@@ -31,7 +31,7 @@ L'Ambassade de Madagascar en France annonce les passeports disponibles en publia
 Depuis le bot Telegram [@passeport_paris_mg_bot](https://t.me/passeport_paris_mg_bot), on peut :
 
 - **savoir si son passeport est prêt** en envoyant son numéro de quittance, par exemple `2026-61191`. La réponse arrive aussitôt, avec l'affiche où figure le numéro ;
-- **être prévenu plus tard** : un numéro pas encore publié est gardé en mémoire, et la personne reçoit un message le jour où il apparaît ;
+- **être prévenu plus tard** : un numéro pas encore publié est gardé en mémoire, et la personne reçoit un message le jour où il apparaît, puis un rappel deux semaines après pour aller retirer son passeport ;
 - **recevoir chaque nouvelle publication**, avec les listes du jour et le rappel de la publication précédente.
 
 Service bénévole, indépendant de l'Ambassade. Les [listes officielles](https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce) font foi. Mode d'emploi complet dans le [wiki](https://github.com/Harrylepap/suivi-passeport-mg/wiki/01-Utiliser-le-bot).
@@ -45,7 +45,7 @@ Service bénévole, indépendant de l'Ambassade. Les [listes officielles](https:
 | Numéros aberrants après lecture | de 232 à 1, grâce au prétraitement et au vote |
 | Appels au site de l'Ambassade | 2 par jour, plus 2 téléchargements au plus par nouvelle affiche |
 | Disponibilité du bot | 24 h sur 24, réponse immédiate |
-| Tests automatisés | 59 sur quatre niveaux, de la règle de gestion au parcours complet en Gherkin |
+| Tests automatisés | 64 sur quatre niveaux, de la règle de gestion au parcours complet en Gherkin |
 | Coût d'exploitation | 0 € |
 
 ## Architecture
@@ -102,6 +102,7 @@ Le réglage a été choisi sur mesures, en comparant une vingtaine de variantes 
 - **Réponse immédiate** : le Worker accuse réception à Telegram tout de suite, puis traite le message en arrière-plan avec `waitUntil`.
 - **Images téléversées une seule fois** : au premier envoi d'une affiche, Telegram renvoie un identifiant de fichier. Il est conservé, et les envois suivants le réutilisent sans retoucher le site de l'Ambassade.
 - **Deux stockages, deux usages** : KV pour les abonnés et leurs numéros suivis, lus à chaque message ; D1, une base SQLite, pour les événements d'usage interrogeables en SQL.
+- **Protection contre les abus** : au-delà de trente recherches en une heure, une conversation est priée de patienter. Le compteur vit dans D1, dont l'offre gratuite accepte cent fois plus d'écritures que KV.
 
 ### Un réveil à l'heure
 
@@ -124,9 +125,9 @@ La stratégie suit celle de mon [engineering playbook](https://github.com/Harryl
 
 | Niveau | La question | Ce qu'il touche | Tests |
 |---|---|---|---|
-| Unitaire `*Test` | Cette règle de gestion est-elle juste ? | Une fonction, sans réseau ni base | 30 |
+| Unitaire `*Test` | Cette règle de gestion est-elle juste ? | Une fonction, sans réseau ni base | 31 |
 | Intégration `*IT` | Ce composant parle-t-il correctement à ses dépendances ? | Tesseract réel, site simulé, base D1 locale | 9 |
-| API `*ApiScenario` | Le contrat tient-il, vu de l'extérieur ? | Le Worker démarré, appelé comme Telegram l'appelle | 15 |
+| API `*ApiScenario` | Le contrat tient-il, vu de l'extérieur ? | Le Worker démarré, appelé comme Telegram l'appelle | 19 |
 | Bout en bout | Le parcours utilisateur fonctionne-t-il ? | Relevé, lecture des affiches et Worker réels | 5 scénarios Gherkin |
 
 Trois règles, sans exception :
@@ -183,7 +184,7 @@ Unitaires ──┬── Intégration ──┐
 - **Information** : la commande `/confidentialite` détaille les données enregistrées, leur usage et les droits de chacun.
 - **Effacement** : `/stop` supprime aussitôt l'inscription, les numéros suivis, la fiche et tout l'historique de la personne.
 - **Durée limitée** : sans message depuis 12 mois, les données d'une personne sont effacées automatiquement, et elle en est prévenue.
-- **Sauvegardes chiffrées** : chaque dimanche, la base est exportée, chiffrée en AES-256 et déposée dans la branche `sauvegarde`. Seules les quatre dernières semaines sont gardées, sans historique.
+- **Sauvegardes chiffrées et éprouvées** : chaque dimanche, la base est exportée, chiffrée en AES-256 et déposée dans la branche `sauvegarde`, puis aussitôt déchiffrée et restaurée dans une base vierge pour vérifier qu'elle est complète. Seules les quatre dernières semaines sont gardées, sans historique.
 - **Rien en clair dans ce dépôt public** : ni donnée d'utilisateur, ni secret.
 - **Registre des traitements** tenu à jour : [docs/registre-des-traitements.md](docs/registre-des-traitements.md).
 
