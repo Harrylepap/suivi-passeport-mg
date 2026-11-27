@@ -12,17 +12,17 @@ const env = {
 };
 
 describe("CreneauDuReleveTest", () => {
-  test("11 h et 19 h à Paris en hiver, soit 10 h et 18 h UTC", () => {
-    assert.ok(estHeureDeReleve(new Date("2026-11-27T10:00:00Z")));
+  test("10 h et 19 h à Paris en hiver, soit 9 h et 18 h UTC", () => {
+    assert.ok(estHeureDeReleve(new Date("2026-11-27T09:00:00Z")));
     assert.ok(estHeureDeReleve(new Date("2026-11-27T18:00:00Z")));
-    assert.ok(!estHeureDeReleve(new Date("2026-11-27T09:00:00Z")));
+    assert.ok(!estHeureDeReleve(new Date("2026-11-27T08:00:00Z")));
     assert.ok(!estHeureDeReleve(new Date("2026-11-27T17:00:00Z")));
   });
 
-  test("11 h et 19 h à Paris en été, soit 9 h et 17 h UTC", () => {
-    assert.ok(estHeureDeReleve(new Date("2026-07-01T09:00:00Z")));
+  test("10 h et 19 h à Paris en été, soit 8 h et 17 h UTC", () => {
+    assert.ok(estHeureDeReleve(new Date("2026-07-01T08:00:00Z")));
     assert.ok(estHeureDeReleve(new Date("2026-07-01T17:00:00Z")));
-    assert.ok(!estHeureDeReleve(new Date("2026-07-01T10:00:00Z")));
+    assert.ok(!estHeureDeReleve(new Date("2026-07-01T09:00:00Z")));
     assert.ok(!estHeureDeReleve(new Date("2026-07-01T18:00:00Z")));
   });
 });
@@ -47,7 +47,7 @@ describe("DeclenchementDuReleveTest", () => {
   });
 
   test("à l'heure du relevé, le workflow est lancé sur main", async () => {
-    assert.equal(await declencherReleve(env, new Date("2026-11-27T10:00:00Z")), true);
+    assert.equal(await declencherReleve(env, new Date("2026-11-27T09:00:00Z")), true);
     assert.equal(appels.length, 1);
     assert.equal(appels[0].url, "https://github.test/repos/proprietaire/depot/actions/workflows/check.yml/dispatches");
     assert.equal(appels[0].init.headers.Authorization, "Bearer jeton-github");
@@ -55,7 +55,7 @@ describe("DeclenchementDuReleveTest", () => {
   });
 
   test("hors des heures du relevé, rien n'est lancé", async () => {
-    assert.equal(await declencherReleve(env, new Date("2026-11-27T09:00:00Z")), false);
+    assert.equal(await declencherReleve(env, new Date("2026-11-27T08:00:00Z")), false);
     assert.equal(appels.length, 0);
   });
 

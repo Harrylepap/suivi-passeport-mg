@@ -2,9 +2,9 @@ name = "passeport-bot"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
 
-# 11 h et 19 h à Paris : 10 h et 18 h UTC en hiver, 9 h et 17 h en été. Le Worker garde les bons créneaux.
+# 10 h et 19 h à Paris : 9 h et 18 h UTC en hiver, 8 h et 17 h en été. Le Worker garde les bons créneaux.
 [triggers]
-crons = ["0 9,10,17,18 * * *"]
+crons = ["0 8,9,17,18 * * *"]
 
 [observability]
 enabled = true

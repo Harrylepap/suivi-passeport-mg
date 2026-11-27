@@ -1,6 +1,6 @@
 name: Relevé des annonces
 
-# Déclenché à 11 h et 19 h, heure de Paris, par la tâche planifiée du Worker Cloudflare,
+# Déclenché à 10 h et 19 h, heure de Paris, par la tâche planifiée du Worker Cloudflare,
 # ou à la main depuis l'onglet Actions. Le cron de GitHub, retardé de plusieurs heures, n'est plus utilisé.
 on:
   workflow_dispatch:

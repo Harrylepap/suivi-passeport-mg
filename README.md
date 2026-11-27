@@ -57,7 +57,7 @@ flowchart LR
     W <--> KV[(Workers KV<br/>abonnés, suivis)]
     W <--> D1[(D1 SQLite<br/>usage)]
 
-    W -.->|tâche planifiée<br/>11 h et 19 h| R
+    W -.->|tâche planifiée<br/>10 h et 19 h| R
     S[Site de l'Ambassade] -->|1 requête| R[GitHub Actions<br/>relevé Python + Tesseract]
     R -->|base des numéros| W
     R -->|annonces, alertes| TG
@@ -105,11 +105,11 @@ Le réglage a été choisi sur mesures, en comparant une vingtaine de variantes 
 
 ### Un réveil à l'heure
 
-Le relevé devait tourner à 11 h et 19 h sur le planificateur de GitHub Actions. Mesuré sur trois jours, celui-ci l'a lancé avec 7 à 9 heures de retard : la liste de l'après-midi annoncée au milieu de la nuit. GitHub ne garantit aucune heure aux tâches planifiées, et place les dépôts peu actifs en fin de file.
+Le relevé était d'abord confié au planificateur de GitHub Actions. Mesuré sur trois jours, celui-ci l'a lancé avec 7 à 9 heures de retard : la liste de l'après-midi annoncée au milieu de la nuit. GitHub ne garantit aucune heure aux tâches planifiées, et place les dépôts peu actifs en fin de file.
 
 Le réveil a donc changé de main. Une tâche planifiée du Worker Cloudflare, ponctuelle à la minute, lance le workflow GitHub par son API. Le relevé lui-même ne bouge pas : il tourne toujours sur GitHub, avec Tesseract.
 
-- un seul déclencheur, déclaré à 9 h, 10 h, 17 h et 18 h UTC ; le Worker ne retient que les créneaux qui tombent à 11 h ou 19 h à Paris, été comme hiver ;
+- un seul déclencheur, déclaré à 8 h, 9 h, 17 h et 18 h UTC ; le Worker ne retient que les créneaux qui tombent à 10 h ou 19 h à Paris, été comme hiver ;
 - un jeton GitHub limité à ce dépôt et au seul droit de lancer des workflows ;
 - si GitHub refuse le lancement, l'administrateur est prévenu sur Telegram ;
 - un relevé manqué reste sans conséquence : le suivant rattrape toutes les affiches parues entre-temps.

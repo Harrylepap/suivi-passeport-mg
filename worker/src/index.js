@@ -93,7 +93,7 @@ export default {
     return new Response("Bot en ligne");
   },
 
-  /** Tâche planifiée : lance le relevé GitHub à 11 h et 19 h, heure de Paris. */
+  /** Tâche planifiée : lance le relevé GitHub à 10 h et 19 h, heure de Paris. */
   async scheduled(evenement, env, ctx) {
     ctx.waitUntil(
       declencherReleve(env, new Date(evenement.scheduledTime)).catch((e) =>
@@ -103,14 +103,14 @@ export default {
   },
 };
 
-/** Indique si une date tombe à 11 h ou à 19 h, heure de Paris, été comme hiver. */
+/** Indique si une date tombe à 10 h ou à 19 h, heure de Paris, été comme hiver. */
 export function estHeureDeReleve(date) {
   const heure = Number(
     new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", hour: "numeric", hourCycle: "h23" })
       .formatToParts(date)
       .find((partie) => partie.type === "hour").value,
   );
-  return heure === 11 || heure === 19;
+  return heure === 10 || heure === 19;
 }
 
 /** Lance le workflow du relevé sur GitHub ; prévient l'administrateur si GitHub refuse. */
