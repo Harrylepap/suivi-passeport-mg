@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="948" viewBox="0 0 980 948" role="img" aria-label="Unitaires · règles de gestion, sans réseau ni base">
-<rect width="980" height="948" rx="12" fill="#0D1117"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="1102" viewBox="0 0 980 1102" role="img" aria-label="Unitaires · règles de gestion, sans réseau ni base">
+<rect width="980" height="1102" rx="12" fill="#0D1117"/>
 <rect x="0" y="0" width="490.0" height="4" fill="#FC3D32"/><rect x="490.0" y="0" width="490.0" height="4" fill="#007E3A"/>
 <circle cx="24" cy="26" r="6" fill="#FF5F57"/><circle cx="44" cy="26" r="6" fill="#FEBC2E"/><circle cx="64" cy="26" r="6" fill="#28C840"/>
 <text x="490.0" y="31" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="13" fill="#8B949E">Unitaires · règles de gestion, sans réseau ni base</text>
@@ -40,5 +40,12 @@
 <text x="42" y="844" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ les titres d&#x27;affiches sont nettoyés</text>
 <text x="42" y="866" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ le HTML est échappé</text>
 <text x="42" y="888" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ la politique de confidentialité affiche le contact configuré</text>
-<text x="24" y="910" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">8 réussis · 0 échec</text>
+<text x="24" y="910" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">CreneauDuReleveTest</text>
+<text x="42" y="932" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ 11 h et 19 h à Paris en hiver, soit 10 h et 18 h UTC</text>
+<text x="42" y="954" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ 11 h et 19 h à Paris en été, soit 9 h et 17 h UTC</text>
+<text x="24" y="976" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#79C0FF" xml:space="preserve">DeclenchementDuReleveTest</text>
+<text x="42" y="998" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ à l&#x27;heure du relevé, le workflow est lancé sur main</text>
+<text x="42" y="1020" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ hors des heures du relevé, rien n&#x27;est lancé</text>
+<text x="42" y="1042" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">✔ un refus de GitHub prévient l&#x27;administrateur</text>
+<text x="24" y="1064" font-family="'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="14" fill="#3FB950" xml:space="preserve">13 réussis · 0 échec</text>
 </svg>

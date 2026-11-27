@@ -68,10 +68,13 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: worker/package-lock.json
-      - name: Installer Tesseract et les dépendances
+      - name: Installer Tesseract, avec cache
+        uses: awalsh128/cache-apt-pkgs-action@v1.6.3
+        with:
+          packages: tesseract-ocr
+          version: "1"
+      - name: Installer les dépendances
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq --no-install-recommends tesseract-ocr
           pip install -q -r requirements-dev.txt
           (cd worker && npm ci)
       - name: Relevé, Tesseract et site simulé
@@ -115,10 +118,13 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: worker/package-lock.json
-      - name: Installer Tesseract et les dépendances
+      - name: Installer Tesseract, avec cache
+        uses: awalsh128/cache-apt-pkgs-action@v1.6.3
+        with:
+          packages: tesseract-ocr
+          version: "1"
+      - name: Installer les dépendances
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq --no-install-recommends tesseract-ocr
           pip install -q -r requirements-dev.txt
           (cd worker && npm ci)
       - name: Scénarios Gherkin
