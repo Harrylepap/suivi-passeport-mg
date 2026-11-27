@@ -3,7 +3,7 @@ import json
 import shutil
 import unittest
 
-import check
+from releve import config, lecture, publication, site
 from tests.outils.simulateurs import AFFICHES, FIXTURES, SiteSimule
 
 
@@ -15,7 +15,7 @@ class LectureDesAffichesIT(unittest.TestCase):
         attendus = json.loads((FIXTURES / "attendus.json").read_text(encoding="utf-8"))
         for nom, cas in attendus.items():
             with self.subTest(affiche=nom, cas=cas["cas"]):
-                lus = check.lire_numeros((FIXTURES / nom).read_bytes())
+                lus = lecture.lire_numeros((FIXTURES / nom).read_bytes())
                 self.assertEqual(lus, cas["numeros"])
 
 
@@ -25,24 +25,24 @@ class ReleveDuSiteIT(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.site = SiteSimule()
-        cls.ancienne_adresse = check.ENDPOINT
-        check.ENDPOINT = cls.site.adresse_annonces
+        cls.ancienne_adresse = config.ENDPOINT
+        config.ENDPOINT = cls.site.adresse_annonces
 
     @classmethod
     def tearDownClass(cls):
-        check.ENDPOINT = cls.ancienne_adresse
+        config.ENDPOINT = cls.ancienne_adresse
         cls.site.arreter()
 
     def test_liste_lue_malgre_les_notices_php(self):
         self.site.titres = ["BEG 2025-038", "BEG 2026-066"]
-        annonces = check.fetch_annonces()
-        self.assertEqual([check.nom_court(a) for a in annonces], ["BEG 2026-066", "BEG 2025-038"])
+        annonces = site.fetch_annonces()
+        self.assertEqual([publication.nom_court(a) for a in annonces], ["BEG 2026-066", "BEG 2025-038"])
         self.assertTrue(annonces[0]["image"].endswith(AFFICHES["BEG 2026-066"]))
 
     def test_site_vide_signale(self):
         self.site.titres = []
         with self.assertRaises(RuntimeError):
-            check.fetch_annonces()
+            site.fetch_annonces()
 
 
 if __name__ == "__main__":

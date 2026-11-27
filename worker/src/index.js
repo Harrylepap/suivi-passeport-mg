@@ -1,6 +1,8 @@
 const PAGE = "https://ambamad-paris.diplomatie.gov.mg/app/passeport/index.php/annonce";
 const SUIVIS_MAX = 5;
 const CONSERVATION_MOIS = 12;
+const RAPPEL_JOURS = 14;
+const LIMITE_RECHERCHES_HEURE = 30;
 const RE_QUITTANCE = /(?<!\d)(20\d{2})\s*[-‐-―.]?\s*(\d{4,6})(?!\d)/g;
 const RE_COURT = /(?<!\d)(\d{4,6})(?!\d)/g;
 
@@ -93,24 +95,76 @@ export default {
     return new Response("Bot en ligne");
   },
 
-  /** Tâche planifiée : lance le relevé GitHub à 10 h et 19 h, heure de Paris. */
+  /** Tâche planifiée : lance le relevé GitHub à 10 h et 19 h, et envoie les rappels de retrait à 10 h. */
   async scheduled(evenement, env, ctx) {
+    const date = new Date(evenement.scheduledTime);
     ctx.waitUntil(
-      declencherReleve(env, new Date(evenement.scheduledTime)).catch((e) =>
+      declencherReleve(env, date).catch((e) =>
         console.error(JSON.stringify({ evenement: "erreur_declenchement", message: e.message })),
       ),
     );
+    if (heureParis(date) === 10) {
+      ctx.waitUntil(
+        envoyerRappels(env, date).catch((e) =>
+          console.error(JSON.stringify({ evenement: "erreur_rappels", message: e.message })),
+        ),
+      );
+    }
   },
 };
 
-/** Indique si une date tombe à 10 h ou à 19 h, heure de Paris, été comme hiver. */
-export function estHeureDeReleve(date) {
-  const heure = Number(
+/** Renvoie l'heure de Paris, de 0 à 23, à une date donnée. */
+function heureParis(date) {
+  return Number(
     new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", hour: "numeric", hourCycle: "h23" })
       .formatToParts(date)
       .find((partie) => partie.type === "hour").value,
   );
+}
+
+/** Indique si une date tombe à 10 h ou à 19 h, heure de Paris, été comme hiver. */
+export function estHeureDeReleve(date) {
+  const heure = heureParis(date);
   return heure === 10 || heure === 19;
+}
+
+/** Compose le rappel envoyé quelques jours après la publication d'un numéro suivi. */
+export function texteRappel(numero, liste) {
+  return [
+    "📌 <b>Rappel : votre passeport vous attend</b>",
+    `Le numéro <code>${echapper(numero)}</code> figure dans la liste ${liste}, publiée il y a deux semaines.`,
+    "",
+    "Retrait sans rendez-vous à l'Ambassade, du lundi au vendredi de 14 h 30 à 16 h 30, avec votre ancien passeport. Ces horaires peuvent changer : vérifiez-les sur l'affiche.",
+    "",
+    "Si vous l'avez déjà retiré, ignorez ce message.",
+  ].join("\n");
+}
+
+/** Envoie les rappels arrivés à échéance, puis les efface. Renvoie le nombre de rappels envoyés. */
+async function envoyerRappels(env, maintenant) {
+  const echeance = maintenant.getTime() - RAPPEL_JOURS * 86400000;
+  let envoyes = 0;
+  let cursor;
+  do {
+    const page = await env.KV.list({ prefix: "rappel:", cursor });
+    for (const cle of page.keys) {
+      const { numero, liste, du } = cle.metadata || {};
+      if (!du || Date.parse(du) > echeance) continue;
+      const chat = cle.name.split(":")[1];
+      await envoyerTexte(env, chat, texteRappel(numero, liste)).catch(() => {});
+      await env.KV.delete(cle.name);
+      await journaliser(env, chat, "rappel_retrait", { numero, liste });
+      envoyes += 1;
+    }
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+  return envoyes;
+}
+
+/** Efface les rappels en attente d'une personne. */
+async function effacerRappels(env, chat) {
+  const page = await env.KV.list({ prefix: `rappel:${chat}:` });
+  for (const cle of page.keys) await env.KV.delete(cle.name);
 }
 
 /** Lance le workflow du relevé sur GitHub ; prévient l'administrateur si GitHub refuse. */
@@ -171,6 +225,18 @@ async function admin(request, url, env) {
   if (request.method === "POST" && url.pathname === "/admin/purge") {
     return Response.json({ purges: await purger(env) });
   }
+  if (request.method === "POST" && url.pathname === "/admin/rappels") {
+    const { rappels = [] } = await request.json();
+    for (const { chat, numero, liste, du } of rappels) {
+      await env.KV.put(`rappel:${chat}:${numero}`, "1", {
+        metadata: { numero, liste, du: du || new Date().toISOString() },
+      });
+    }
+    return Response.json({ rappels: rappels.length });
+  }
+  if (request.method === "POST" && url.pathname === "/admin/rappels/envoyer") {
+    return Response.json({ envoyes: await envoyerRappels(env, new Date()) });
+  }
   const m = url.pathname.match(/^\/admin\/abonnes\/(-?\d+)$/);
   if (request.method === "DELETE" && m) {
     await env.KV.delete(`abonne:${m[1]}`);
@@ -192,6 +258,7 @@ async function purger(env) {
       env.DB.prepare("DELETE FROM personnes WHERE chat = ?").bind(chat),
     ]);
     await env.KV.delete(`abonne:${chat}`);
+    await effacerRappels(env, chat);
     await envoyerTexte(
       env,
       chat,
@@ -301,6 +368,17 @@ export function extraireNumeros(texte) {
   return { complets, courts };
 }
 
+/** Compte les recherches d'une personne au cours de la dernière heure. */
+async function recherchesRecentes(env, chat) {
+  if (!env.DB) return 0;
+  const ligne = await env.DB.prepare(
+    "SELECT COUNT(*) AS n FROM evenements WHERE utilisateur = ? AND type = 'recherche' AND date >= strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-1 hour')",
+  )
+    .bind(String(chat))
+    .first();
+  return ligne?.n || 0;
+}
+
 /** Échappe un texte pour l'insérer dans un message HTML. */
 export const echapper = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -362,6 +440,7 @@ async function repondre(env, chat, texte) {
 
   if (commande === "stop") {
     await env.KV.delete(`abonne:${chat}`);
+    await effacerRappels(env, chat);
     if (env.DB) {
       await env.DB.batch([
         env.DB.prepare("DELETE FROM evenements WHERE utilisateur = ?").bind(String(chat)),
@@ -440,6 +519,14 @@ async function repondre(env, chat, texte) {
   }
 
   const { complets, courts } = extraireNumeros(texte);
+  if ((complets.length || courts.length) && (await recherchesRecentes(env, chat)) >= LIMITE_RECHERCHES_HEURE) {
+    await journaliser(env, chat, "limite");
+    return envoyerTexte(
+      env,
+      chat,
+      "Vous avez fait beaucoup de recherches en peu de temps. Réessayez dans une heure.",
+    );
+  }
   if (!complets.length && !courts.length) {
     await journaliser(env, chat, "message_autre");
     return envoyerTexte(env, chat, profil.nouveau ? ACCUEIL : AIDE, MENU);

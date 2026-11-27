@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { confidentialite, echapper, extraireNumeros, nomCourt } from "../../src/index.js";
+import { confidentialite, echapper, extraireNumeros, nomCourt, texteRappel } from "../../src/index.js";
 
 describe("ExtractionDesNumerosTest", () => {
   test("un numéro complet est reconnu, quel que soit le séparateur", () => {
@@ -38,5 +38,15 @@ describe("PresentationTest", () => {
   test("la politique de confidentialité affiche le contact configuré", () => {
     assert.match(confidentialite("@contact"), /écrivez à @contact/);
     assert.match(confidentialite(undefined), /écrivez à l'administrateur du service/);
+  });
+});
+
+describe("RappelDeRetraitTest", () => {
+  test("le rappel cite le numéro, la liste et les horaires de retrait", () => {
+    const texte = texteRappel("2026-61191", "BEG 2026-066");
+    assert.match(texte, /<code>2026-61191<\/code>/);
+    assert.match(texte, /BEG 2026-066/);
+    assert.match(texte, /14 h 30 à 16 h 30/);
+    assert.match(texte, /vérifiez-les sur l'affiche/);
   });
 });
